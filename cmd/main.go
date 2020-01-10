@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 	"runtime"
 
+	"github.com/SebastianJ/harmony-tx-tests/accounts"
+	"github.com/SebastianJ/harmony-tx-tests/testcases"
 	"github.com/SebastianJ/harmony-tx-tests/utils"
 
 	"github.com/urfave/cli"
@@ -58,13 +60,80 @@ func main() {
 
 func startTests(context *cli.Context) error {
 	node := context.GlobalString("node")
+	passphrase := context.GlobalString("passphrase")
 
 	if node == "" {
 		return errors.New("you need to specify a node to use for the API calls")
 	}
 
 	keysPath, _ := filepath.Abs(context.GlobalString("keys"))
-	//keyFiles, err := utils.IdentifyKeyFiles(keysPath)
+	keyFiles, err := utils.IdentifyKeyFiles(keysPath)
+
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(fmt.Sprintf("Found a total of %d keys", len(keyFiles)))
+
+	accs := make(map[string]string)
+
+	for _, keyFile := range keyFiles {
+		//fmt.Println(fmt.Sprintf("Keyfile path found: %s", keyFile))
+
+		keyDetails := utils.ParseKeyDetailsFromKeyFile(keyFile)
+		keyName := fmt.Sprintf("_tx_gen_NEW_FUNDED_ACC_%s", keyDetails["id"])
+
+		err := accounts.ImportAccount(keyFile, keyName, passphrase, keyDetails)
+
+		if err != nil {
+			return err
+		}
+
+		accs[keyName] = keyDetails["address"]
+	}
+
+	//err = balances.OutputBalanceStatusForAddresses(accs, node)
+
+	testcaseStatuses := make(map[string]bool)
+
+	status, err := testcases.Sbs1TestCase(accs, passphrase, node)
+	testcaseStatuses["SBS1"] = status
+
+	if err != nil {
+		fmt.Println(fmt.Sprintf("SBS1 test case failed: %s", err.Error()))
+	}
+
+	testResults(testcaseStatuses)
 
 	return nil
+}
+
+func testResults(testcaseStatuses map[string]bool) {
+	successfulCount := 0
+	failedCount := 0
+
+	for _, status := range testcaseStatuses {
+		if status {
+			successfulCount++
+		} else {
+			failedCount++
+		}
+	}
+
+	fmt.Println("\n------------------------------------------------------------")
+	fmt.Println(fmt.Sprintf("Test suite status - executed a total of %d test case(s):", len(testcaseStatuses)))
+	fmt.Println(fmt.Sprintf("Successful: %d", successfulCount))
+	fmt.Println(fmt.Sprintf("Failed: %d", failedCount))
+	fmt.Println("------------------------------------------------------------\n")
+
+	fmt.Println("Executed test cases:")
+	fmt.Println("------------------------------------------------------------")
+	for testcase, status := range testcaseStatuses {
+		if status {
+			fmt.Println(fmt.Sprintf("Testcase %s: success", testcase))
+		} else {
+			fmt.Println(fmt.Sprintf("Testcase %s: failed", testcase))
+		}
+	}
+	fmt.Println("------------------------------------------------------------\n")
 }
