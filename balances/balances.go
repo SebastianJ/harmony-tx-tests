@@ -5,12 +5,25 @@ import (
 	"github.com/SebastianJ/harmony-tx-sender/balances"
 )
 
+// GetShardBalance - gets the balance for a given address and shard
+func GetShardBalance(address string, shardID int, node string) (float64, error) {
+	shardBalances, err := balances.CheckAllShardBalances(node, address)
+
+	if err != nil {
+		return -99999.0, err
+	}
+
+	shardBalance := shardBalances[shardID]
+
+	return shardBalance, nil
+}
+
 // GetTotalBalance - gets the total balance across all shards for a given address
 func GetTotalBalance(address string, node string) (float64, error) {
 	shardBalances, err := balances.CheckAllShardBalances(node, address)
 
 	if err != nil {
-		return -1.0, err
+		return -99999.0, err
 	}
 
 	totalBalance := 0.0
@@ -28,17 +41,10 @@ func OutputBalanceStatusForAddresses(accounts map[string]string, node string) er
 	missingFunds := make(map[string]string)
 
 	for keyName, address := range accounts {
-		shardBalances, err := balances.CheckAllShardBalances(node, address)
+		totalBalance, err := GetTotalBalance(address, node)
 
 		if err != nil {
 			return err
-		}
-
-		totalBalance := 0.0
-
-		for shardID, balance := range shardBalances {
-			fmt.Println(fmt.Sprintf("Balance in shard %d is %f", shardID, balance))
-			totalBalance += balance
 		}
 
 		if totalBalance > 0.0 {

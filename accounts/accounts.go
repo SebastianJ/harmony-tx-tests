@@ -2,9 +2,14 @@ package accounts
 
 import (
 	"fmt"
+	"os"
+	"path"
+
 	"github.com/harmony-one/go-sdk/pkg/account"
 	"github.com/harmony-one/go-sdk/pkg/address"
+	"github.com/harmony-one/go-sdk/pkg/common"
 	"github.com/harmony-one/go-sdk/pkg/store"
+	homedir "github.com/mitchellh/go-homedir"
 )
 
 // GenerateAccount - generates a new account using the specified name and passphrase
@@ -62,4 +67,12 @@ func FindAccountAddressByName(targetName string) string {
 	}
 
 	return ""
+}
+
+// RemoveAccount - removes an account from the keystore
+func RemoveAccount(name string) {
+	uDir, _ := homedir.Dir()
+	hmyCLIDir := path.Join(uDir, common.DefaultConfigDirName, common.DefaultConfigAccountAliasesDirName)
+	accountDir := fmt.Sprintf("%s/%s", hmyCLIDir, name)
+	os.RemoveAll(accountDir)
 }

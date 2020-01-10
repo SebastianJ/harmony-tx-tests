@@ -61,8 +61,6 @@ func ParseKeyDetailsFromKeyFile(path string) (keyDetails map[string]string) {
 func IdentifyKeyFiles(path string) ([]string, error) {
 	pattern := fmt.Sprintf("%s/_tx_gen_NEW_FUNDED_ACC_*/UTC*", path)
 
-	fmt.Println("Key file pattern is now: ", pattern)
-
 	keys, err := globFiles(pattern)
 
 	if err != nil {

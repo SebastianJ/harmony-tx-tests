@@ -8,7 +8,16 @@ import (
 	"github.com/harmony-one/go-sdk/pkg/store"
 )
 
-type interfaceWrapper []interface{}
+// IsTransactionSuccessful - checks if a transaction is successful given a transaction response
+func IsTransactionSuccessful(txResponse map[string]interface{}) (success bool) {
+	txStatus, ok := txResponse["status"].(string)
+
+	if txStatus != "" && ok {
+		success = (txStatus == "0x1")
+	}
+
+	return success
+}
 
 // SendSameShardTransaction - send a transaction using the same shard for both the receiver and the sender
 func SendSameShardTransaction(fromAddress string, toAddress string, shardID uint32, amount float64, gasPrice int64, txData string, passphrase string, node string, confirmationWaitTime int) (map[string]interface{}, error) {

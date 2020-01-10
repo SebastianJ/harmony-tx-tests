@@ -2,7 +2,6 @@ package testcases
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/SebastianJ/harmony-tx-tests/accounts"
 	"github.com/SebastianJ/harmony-tx-tests/balances"
@@ -10,35 +9,37 @@ import (
 	"github.com/SebastianJ/harmony-tx-tests/utils"
 )
 
+var (
+	testCaseName         = "SBS1"
+	shardID              = uint32(0)
+	txData               = ``
+	amount               = 1.0
+	gasPrice             = int64(1)
+	confirmationWaitTime = 16
+)
+
 // Sbs1TestCase - Same Beacon Shard single account transfer A -> B, Shard 0 -> 0, Amount 1, Tx Data nil, expects: successful token transferred from A to B within 2 blocks time 16s
 func Sbs1TestCase(accs map[string]string, passphrase string, node string) (bool, error) {
-	keyName, fromAddress := utils.RandomItemFromMap(accs)
 	var success bool
-	timeFormat := "2006-01-02 15:04:05"
 
-	fmt.Println("\n-----Test case: SBS1---------------------------------------------------------------------------")
-	fmt.Println(fmt.Sprintf("%s - [Test Case - SBS1]: Using source/sender key: %s and address: %s", time.Now().Format(timeFormat), keyName, fromAddress))
+	keyName, fromAddress := utils.RandomItemFromMap(accs)
 
-	shardID := uint32(0)
-	txData := ``
-	amount := 1.0
-	gasPrice := int64(1)
-	confirmationWaitTime := 16
+	TestLegend(testCaseName)
+	TestLog(testCaseName, fmt.Sprintf("Using source/sender key: %s and address: %s", keyName, fromAddress))
 
 	sinkAccountName := fmt.Sprintf("%s_sink", keyName)
 	err := accounts.GenerateAccount(sinkAccountName, passphrase)
 	toAddress := accounts.FindAccountAddressByName(sinkAccountName)
 
-	senderStartingBalance, _ := balances.GetTotalBalance(fromAddress, node)
-	receiverStartingBalance, _ := balances.GetTotalBalance(toAddress, node)
+	senderStartingBalance, _ := balances.GetShardBalance(fromAddress, int(shardID), node)
+	receiverStartingBalance, _ := balances.GetShardBalance(toAddress, int(shardID), node)
 
-	fmt.Println(fmt.Sprintf("%s - [Test Case - SBS1]: Generated a new receiver/sink account: %s, address: %s", time.Now().Format(timeFormat), sinkAccountName, toAddress))
-	fmt.Println(fmt.Sprintf("%s - [Test Case - SBS1]: Using source account %s (address: %s) and sink account %s (address : %s)", time.Now().Format(timeFormat), keyName, fromAddress, sinkAccountName, toAddress))
-	fmt.Println(fmt.Sprintf("%s - [Test Case - SBS1]: Source account %s (address: %s) has a starting balance of %f across all shards before the test", time.Now().Format(timeFormat), keyName, fromAddress, senderStartingBalance))
-	fmt.Println(fmt.Sprintf("%s - [Test Case - SBS1]: Sink account %s (address: %s) has a starting balance of %f across all shards before the test", time.Now().Format(timeFormat), sinkAccountName, toAddress, receiverStartingBalance))
-
-	fmt.Println(fmt.Sprintf("%s - [Test Case - SBS1]: Will let the transaction wait up to %d seconds to try to get finalized within 2 blocks", time.Now().Format(timeFormat), confirmationWaitTime))
-	fmt.Println(fmt.Sprintf("%s - [Test Case - SBS1]: Sending transaction...", time.Now().Format(timeFormat)))
+	TestLog(testCaseName, fmt.Sprintf("Generated a new receiver/sink account: %s, address: %s", sinkAccountName, toAddress))
+	TestLog(testCaseName, fmt.Sprintf("Using source account %s (address: %s) and sink account %s (address : %s)", keyName, fromAddress, sinkAccountName, toAddress))
+	TestLog(testCaseName, fmt.Sprintf("Source account %s (address: %s) has a starting balance of %f in shard %d before the test", keyName, fromAddress, senderStartingBalance, shardID))
+	TestLog(testCaseName, fmt.Sprintf("Sink account %s (address: %s) has a starting balance of %f in shard %d before the test", sinkAccountName, toAddress, receiverStartingBalance, shardID))
+	TestLog(testCaseName, fmt.Sprintf("Will let the transaction wait up to %d seconds to try to get finalized within 2 blocks", confirmationWaitTime))
+	TestLog(testCaseName, "Sending transaction...")
 
 	txResponse, err := transactions.SendSameShardTransaction(fromAddress, toAddress, shardID, amount, gasPrice, txData, passphrase, node, confirmationWaitTime)
 
@@ -48,21 +49,20 @@ func Sbs1TestCase(accs map[string]string, passphrase string, node string) (bool,
 	}
 
 	txHash := txResponse["transactionHash"].(string)
-	txStatus, ok := txResponse["status"].(string)
+	success = transactions.IsTransactionSuccessful(txResponse)
 
-	if txStatus != "" && ok {
-		success = (txStatus == "0x1")
-	}
+	TestLog(testCaseName, fmt.Sprintf("Sent %f token(s) from %s to %s - transaction hash: %s, tx successful: %t", amount, fromAddress, toAddress, txHash, success))
 
-	fmt.Println(fmt.Sprintf(`%s - [Test Case - SBS1]: Sent %f token(s) from %s to %s - transaction hash: %s, tx status: %s`, time.Now().Format(timeFormat), amount, fromAddress, toAddress, txHash, txStatus))
+	senderEndingBalance, _ := balances.GetShardBalance(fromAddress, int(shardID), node)
+	receiverEndingBalance, _ := balances.GetShardBalance(toAddress, int(shardID), node)
 
-	senderEndingBalance, _ := balances.GetTotalBalance(fromAddress, node)
-	receiverEndingBalance, _ := balances.GetTotalBalance(toAddress, node)
+	TestLog(testCaseName, fmt.Sprintf("Source account %s (address: %s) has an ending balance of %f in shard %d after the test", keyName, fromAddress, senderEndingBalance, shardID))
+	TestLog(testCaseName, fmt.Sprintf("Sink account %s (address: %s) has an ending balance of %f in shard %d after the test", sinkAccountName, toAddress, receiverEndingBalance, shardID))
+	TestLog(testCaseName, "Performing test teardown (returning funds and removing sink account) ...")
 
-	fmt.Println(fmt.Sprintf("%s - [Test Case - SBS1]: Source account %s (address: %s) has an ending balance of %f across all shards after the test", time.Now().Format(timeFormat), keyName, fromAddress, senderEndingBalance))
-	fmt.Println(fmt.Sprintf("%s - [Test Case - SBS1]: Sink account %s (address: %s) has an ending balance of %f across all shards after the test", time.Now().Format(timeFormat), sinkAccountName, toAddress, receiverEndingBalance))
+	Teardown(sinkAccountName, toAddress, shardID, fromAddress, shardID, amount, gasPrice, passphrase, node, 0)
+	TestLegend(testCaseName)
 
-	fmt.Println("-----Test case: SBS1---------------------------------------------------------------------------\n")
 	success = (success && ((receiverStartingBalance)+amount == receiverEndingBalance))
 
 	return success, nil
