@@ -94,26 +94,20 @@ func startTests(context *cli.Context) error {
 
 	//err = balances.OutputBalanceStatusForAddresses(accs, node)
 
-	testcaseStatuses := make(map[string]bool)
-
-	status, err := testcases.Sbs1TestCase(accs, passphrase, node)
-	testcaseStatuses["SBS1"] = status
-
-	if err != nil {
-		fmt.Println(fmt.Sprintf("SBS1 test case failed: %s", err.Error()))
-	}
+	testcaseStatuses := make(map[string]testcases.TestCase)
+	testcaseStatuses["SBS1"] = testcases.Sbs1TestCase(accs, passphrase, node)
 
 	testResults(testcaseStatuses)
 
 	return nil
 }
 
-func testResults(testcaseStatuses map[string]bool) {
+func testResults(testcaseStatuses map[string]testcases.TestCase) {
 	successfulCount := 0
 	failedCount := 0
 
-	for _, status := range testcaseStatuses {
-		if status {
+	for _, testCase := range testcaseStatuses {
+		if testCase.Result == testCase.Expected {
 			successfulCount++
 		} else {
 			failedCount++
@@ -128,11 +122,11 @@ func testResults(testcaseStatuses map[string]bool) {
 
 	fmt.Println("Executed test cases:")
 	fmt.Println("------------------------------------------------------------")
-	for testcase, status := range testcaseStatuses {
-		if status {
-			fmt.Println(fmt.Sprintf("Testcase %s: success", testcase))
+	for testCaseName, testCase := range testcaseStatuses {
+		if testCase.Result == testCase.Expected {
+			fmt.Println(fmt.Sprintf("Testcase %s: success", testCaseName))
 		} else {
-			fmt.Println(fmt.Sprintf("Testcase %s: failed", testcase))
+			fmt.Println(fmt.Sprintf("Testcase %s: failed", testCaseName))
 		}
 	}
 	fmt.Println("------------------------------------------------------------\n")
