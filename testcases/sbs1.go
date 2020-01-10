@@ -10,8 +10,10 @@ import (
 )
 
 var testCase TestCase = TestCase{
+	Scenario: "Same Beacon Shard",
 	Name:     "SBS1",
-	Result:   false,
+	Goal:     "Single account",
+	Priority: 0,
 	Expected: true,
 	Parameters: map[string]interface{}{
 		"fromShardID":          0,
@@ -54,15 +56,15 @@ func Sbs1TestCase(accs map[string]string, passphrase string, node string) TestCa
 	TestLog(testCase.Name, fmt.Sprintf("Will let the transaction wait up to %d seconds to try to get finalized within 2 blocks", confirmationWaitTime))
 	TestLog(testCase.Name, "Sending transaction...")
 
-	testCase.TxData, err = transactions.SendSameShardTransaction(fromAddress, toAddress, uint32(shardID), amount, gasPrice, txData, passphrase, node, confirmationWaitTime)
+	testCase.Transaction, err = transactions.SendSameShardTransaction(fromAddress, toAddress, uint32(shardID), amount, gasPrice, txData, passphrase, node, confirmationWaitTime)
 
 	if err != nil {
 		testCase.Error = err
 		return testCase
 	}
 
-	txHash := testCase.TxData["transactionHash"].(string)
-	success := transactions.IsTransactionSuccessful(testCase.TxData)
+	txHash := testCase.Transaction["transactionHash"].(string)
+	success := transactions.IsTransactionSuccessful(testCase.Transaction)
 
 	TestLog(testCase.Name, fmt.Sprintf("Sent %f token(s) from %s to %s - transaction hash: %s, tx successful: %t", amount, fromAddress, toAddress, txHash, success))
 
@@ -71,7 +73,7 @@ func Sbs1TestCase(accs map[string]string, passphrase string, node string) TestCa
 
 	TestLog(testCase.Name, fmt.Sprintf("Source account %s (address: %s) has an ending balance of %f in shard %d after the test", keyName, fromAddress, senderEndingBalance, shardID))
 	TestLog(testCase.Name, fmt.Sprintf("Sink account %s (address: %s) has an ending balance of %f in shard %d after the test", sinkAccountName, toAddress, receiverEndingBalance, shardID))
-	TestLog(testCase.Name, "Performing test teardown (returning funds and removing sink account) ...")
+	TestLog(testCase.Name, "Performing test teardown (returning funds and removing sink account)")
 
 	Teardown(sinkAccountName, toAddress, uint32(shardID), fromAddress, uint32(shardID), amount, gasPrice, passphrase, node, 0)
 	TestTitle(testCase.Name, "footer")

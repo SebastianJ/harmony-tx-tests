@@ -114,7 +114,7 @@ func testResults(testcaseStatuses map[string]testcases.TestCase) {
 		}
 	}
 
-	fmt.Println("\n------------------------------------------------------------")
+	fmt.Println("------------------------------------------------------------")
 	fmt.Println(fmt.Sprintf("Test suite status - executed a total of %d test case(s):", len(testcaseStatuses)))
 	fmt.Println(fmt.Sprintf("Successful: %d", successfulCount))
 	fmt.Println(fmt.Sprintf("Failed: %d", failedCount))
