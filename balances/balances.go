@@ -6,14 +6,14 @@ import (
 )
 
 // GetShardBalance - gets the balance for a given address and shard
-func GetShardBalance(address string, shardID int, node string) (float64, error) {
+func GetShardBalance(address string, shardID uint32, node string) (float64, error) {
 	shardBalances, err := balances.CheckAllShardBalances(node, address)
 
 	if err != nil {
 		return -99999.0, err
 	}
 
-	shardBalance := shardBalances[shardID]
+	shardBalance := shardBalances[int(shardID)]
 
 	return shardBalance, nil
 }

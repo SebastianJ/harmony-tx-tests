@@ -10,19 +10,23 @@ var (
 )
 
 // TestTitle - header/footer for test cases
-func TestTitle(name string, titleType string) {
-	if titleType == "header" {
-		fmt.Println("\n")
-	}
+func TestTitle(name string, titleType string, verbose bool) {
+	if verbose {
+		if titleType == "header" {
+			fmt.Println("\n")
+		}
 
-	fmt.Println(fmt.Sprintf("-----Test case: %s---------------------------------------------------------------------------", name))
+		fmt.Println(fmt.Sprintf("-----Test case: %s---------------------------------------------------------------------------", name))
 
-	if titleType == "footer" {
-		fmt.Println("\n")
+		if titleType == "footer" {
+			fmt.Println("\n")
+		}
 	}
 }
 
 // TestLog - time stamped logging messages for test cases
-func TestLog(name string, message string) {
-	fmt.Println(fmt.Sprintf("%s - [Test Case - %s]: %s", time.Now().Format(timeFormat), name, message))
+func TestLog(name string, message string, verbose bool) {
+	if verbose {
+		fmt.Println(fmt.Sprintf("%s - [Test Case - %s]: %s", time.Now().Format(timeFormat), name, message))
+	}
 }

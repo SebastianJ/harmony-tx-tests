@@ -69,6 +69,19 @@ func FindAccountAddressByName(targetName string) string {
 	return ""
 }
 
+// GenerateAccountAndReturnAddress - Generate a new keystore account and return its address
+func GenerateAccountAndReturnAddress(name string, passphrase string) (string, error) {
+	err := GenerateAccount(name, passphrase)
+
+	if err != nil {
+		return "", err
+	}
+
+	address := FindAccountAddressByName(name)
+
+	return address, nil
+}
+
 // RemoveAccount - removes an account from the keystore
 func RemoveAccount(name string) {
 	uDir, _ := homedir.Dir()
