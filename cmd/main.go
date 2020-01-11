@@ -92,10 +92,9 @@ func startTests(context *cli.Context) error {
 		accs[keyName] = keyDetails["address"]
 	}
 
-	//err = balances.OutputBalanceStatusForAddresses(accs, node)
-
 	testcaseStatuses := make(map[string]testcases.TestCase)
 	testcaseStatuses["SBS1"] = testcases.Sbs1TestCase(accs, passphrase, node)
+	testcaseStatuses["SBS2"] = testcases.Sbs2TestCase(accs, passphrase, node)
 
 	testResults(testcaseStatuses)
 

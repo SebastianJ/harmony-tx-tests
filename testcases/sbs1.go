@@ -10,7 +10,7 @@ import (
 )
 
 // Common test parameters are defined here - e.g. the test case name, expected result of the test and the required parameters to run the test case
-var testCase TestCase = TestCase{
+var sbs1TestCase TestCase = TestCase{
 	Scenario: "Same Beacon Shard",
 	Name:     "SBS1",
 	Goal:     "Single account",
@@ -22,7 +22,7 @@ var testCase TestCase = TestCase{
 		ToShardID:            0,
 		Data:                 "",
 		Amount:               1.0,
-		GasPrice:             1,
+		GasPrice:             0,
 		Count:                1,
 		ConfirmationWaitTime: 16,
 	},
@@ -32,40 +32,40 @@ var testCase TestCase = TestCase{
 func Sbs1TestCase(accs map[string]string, passphrase string, node string) TestCase {
 	keyName, fromAddress := utils.RandomItemFromMap(accs)
 
-	TestTitle(testCase.Name, "header", testCase.Verbose)
-	TestLog(testCase.Name, fmt.Sprintf("Using source/sender key: %s and address: %s", keyName, fromAddress), testCase.Verbose)
+	TestTitle(sbs1TestCase.Name, "header", sbs1TestCase.Verbose)
+	TestLog(sbs1TestCase.Name, fmt.Sprintf("Using source/sender key: %s and address: %s", keyName, fromAddress), sbs1TestCase.Verbose)
 
 	sinkAccountName := fmt.Sprintf("%s_sink", keyName)
-	TestLog(testCase.Name, fmt.Sprintf("Generating a new receiver/sink account: %s", sinkAccountName), testCase.Verbose)
+	TestLog(sbs1TestCase.Name, fmt.Sprintf("Generating a new receiver/sink account: %s", sinkAccountName), sbs1TestCase.Verbose)
 	toAddress, err := accounts.GenerateAccountAndReturnAddress(sinkAccountName, passphrase)
 
-	senderStartingBalance, _ := balances.GetShardBalance(fromAddress, testCase.Parameters.FromShardID, node)
-	receiverStartingBalance, _ := balances.GetShardBalance(toAddress, testCase.Parameters.ToShardID, node)
+	senderStartingBalance, _ := balances.GetShardBalance(fromAddress, sbs1TestCase.Parameters.FromShardID, node)
+	receiverStartingBalance, _ := balances.GetShardBalance(toAddress, sbs1TestCase.Parameters.ToShardID, node)
 
-	TestLog(testCase.Name, fmt.Sprintf("Generated a new receiver/sink account: %s, address: %s", sinkAccountName, toAddress), testCase.Verbose)
-	TestLog(testCase.Name, fmt.Sprintf("Using source account %s (address: %s) and sink account %s (address : %s)", keyName, fromAddress, sinkAccountName, toAddress), testCase.Verbose)
-	TestLog(testCase.Name, fmt.Sprintf("Source account %s (address: %s) has a starting balance of %f in shard %d before the test", keyName, fromAddress, senderStartingBalance, testCase.Parameters.FromShardID), testCase.Verbose)
-	TestLog(testCase.Name, fmt.Sprintf("Sink account %s (address: %s) has a starting balance of %f in shard %d before the test", sinkAccountName, toAddress, receiverStartingBalance, testCase.Parameters.ToShardID), testCase.Verbose)
-	TestLog(testCase.Name, fmt.Sprintf("Will let the transaction wait up to %d seconds to try to get finalized within 2 blocks", testCase.Parameters.ConfirmationWaitTime), testCase.Verbose)
-	TestLog(testCase.Name, "Sending transaction...", testCase.Verbose)
+	TestLog(sbs1TestCase.Name, fmt.Sprintf("Generated a new receiver/sink account: %s, address: %s", sinkAccountName, toAddress), sbs1TestCase.Verbose)
+	TestLog(sbs1TestCase.Name, fmt.Sprintf("Using source account %s (address: %s) and sink account %s (address : %s)", keyName, fromAddress, sinkAccountName, toAddress), sbs1TestCase.Verbose)
+	TestLog(sbs1TestCase.Name, fmt.Sprintf("Source account %s (address: %s) has a starting balance of %f in shard %d before the test", keyName, fromAddress, senderStartingBalance, sbs1TestCase.Parameters.FromShardID), sbs1TestCase.Verbose)
+	TestLog(sbs1TestCase.Name, fmt.Sprintf("Sink account %s (address: %s) has a starting balance of %f in shard %d before the test", sinkAccountName, toAddress, receiverStartingBalance, sbs1TestCase.Parameters.ToShardID), sbs1TestCase.Verbose)
+	TestLog(sbs1TestCase.Name, fmt.Sprintf("Will let the transaction wait up to %d seconds to try to get finalized within 2 blocks", sbs1TestCase.Parameters.ConfirmationWaitTime), sbs1TestCase.Verbose)
+	TestLog(sbs1TestCase.Name, "Sending transaction...", sbs1TestCase.Verbose)
 
-	rawTx, err := transactions.SendTransaction(fromAddress, testCase.Parameters.FromShardID, toAddress, testCase.Parameters.ToShardID, testCase.Parameters.Amount, testCase.Parameters.GasPrice, testCase.Parameters.Data, passphrase, node, testCase.Parameters.ConfirmationWaitTime)
-	testCaseTx := ConvertToTestCaseTransaction(fromAddress, toAddress, rawTx, testCase.Parameters, err)
-	testCase.Transactions = append(testCase.Transactions, testCaseTx)
+	rawTx, err := transactions.SendTransaction(fromAddress, sbs1TestCase.Parameters.FromShardID, toAddress, sbs1TestCase.Parameters.ToShardID, sbs1TestCase.Parameters.Amount, sbs1TestCase.Parameters.GasPrice, sbs1TestCase.Parameters.Data, passphrase, node, sbs1TestCase.Parameters.ConfirmationWaitTime)
+	testCaseTx := ConvertToTestCaseTransaction(fromAddress, toAddress, rawTx, sbs1TestCase.Parameters, err)
+	sbs1TestCase.Transactions = append(sbs1TestCase.Transactions, testCaseTx)
 
-	TestLog(testCase.Name, fmt.Sprintf("Sent %f token(s) from %s to %s - transaction hash: %s, tx successful: %t", testCase.Parameters.Amount, fromAddress, toAddress, testCaseTx.TransactionHash, testCaseTx.Success), testCase.Verbose)
+	TestLog(sbs1TestCase.Name, fmt.Sprintf("Sent %f token(s) from %s to %s - transaction hash: %s, tx successful: %t", sbs1TestCase.Parameters.Amount, fromAddress, toAddress, testCaseTx.TransactionHash, testCaseTx.Success), sbs1TestCase.Verbose)
 
-	senderEndingBalance, _ := balances.GetShardBalance(fromAddress, testCase.Parameters.FromShardID, node)
-	receiverEndingBalance, _ := balances.GetShardBalance(toAddress, testCase.Parameters.ToShardID, node)
+	senderEndingBalance, _ := balances.GetShardBalance(fromAddress, sbs1TestCase.Parameters.FromShardID, node)
+	receiverEndingBalance, _ := balances.GetShardBalance(toAddress, sbs1TestCase.Parameters.ToShardID, node)
 
-	TestLog(testCase.Name, fmt.Sprintf("Source account %s (address: %s) has an ending balance of %f in shard %d after the test", keyName, fromAddress, senderEndingBalance, testCase.Parameters.FromShardID), testCase.Verbose)
-	TestLog(testCase.Name, fmt.Sprintf("Sink account %s (address: %s) has an ending balance of %f in shard %d after the test", sinkAccountName, toAddress, receiverEndingBalance, testCase.Parameters.ToShardID), testCase.Verbose)
-	TestLog(testCase.Name, "Performing test teardown (returning funds and removing sink account)", testCase.Verbose)
-	TestTitle(testCase.Name, "footer", testCase.Verbose)
+	TestLog(sbs1TestCase.Name, fmt.Sprintf("Source account %s (address: %s) has an ending balance of %f in shard %d after the test", keyName, fromAddress, senderEndingBalance, sbs1TestCase.Parameters.FromShardID), sbs1TestCase.Verbose)
+	TestLog(sbs1TestCase.Name, fmt.Sprintf("Sink account %s (address: %s) has an ending balance of %f in shard %d after the test", sinkAccountName, toAddress, receiverEndingBalance, sbs1TestCase.Parameters.ToShardID), sbs1TestCase.Verbose)
+	TestLog(sbs1TestCase.Name, "Performing test teardown (returning funds and removing sink account)", sbs1TestCase.Verbose)
+	TestTitle(sbs1TestCase.Name, "footer", sbs1TestCase.Verbose)
 
-	Teardown(sinkAccountName, toAddress, testCase.Parameters.FromShardID, fromAddress, testCase.Parameters.ToShardID, testCase.Parameters.Amount, testCase.Parameters.GasPrice, passphrase, node, 0)
+	Teardown(sinkAccountName, toAddress, sbs1TestCase.Parameters.FromShardID, fromAddress, sbs1TestCase.Parameters.ToShardID, sbs1TestCase.Parameters.Amount, sbs1TestCase.Parameters.GasPrice, passphrase, node, 0)
 
-	testCase.Result = (testCaseTx.Success && ((receiverStartingBalance)+testCase.Parameters.Amount == receiverEndingBalance))
+	sbs1TestCase.Result = (testCaseTx.Success && ((receiverStartingBalance)+sbs1TestCase.Parameters.Amount == receiverEndingBalance))
 
-	return testCase
+	return sbs1TestCase
 }
