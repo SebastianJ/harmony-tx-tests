@@ -1,4 +1,4 @@
-package testcases
+package testing
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ var (
 )
 
 // TestTitle - header/footer for test cases
-func TestTitle(name string, titleType string, verbose bool) {
+func Title(name string, titleType string, verbose bool) {
 	if verbose {
 		if titleType == "header" {
 			fmt.Println("\n")
@@ -25,7 +25,7 @@ func TestTitle(name string, titleType string, verbose bool) {
 }
 
 // TestLog - time stamped logging messages for test cases
-func TestLog(name string, message string, verbose bool) {
+func Log(name string, message string, verbose bool) {
 	if verbose {
 		fmt.Println(fmt.Sprintf("%s - [Test Case - %s]: %s", time.Now().Format(timeFormat), name, message))
 	}

@@ -9,6 +9,7 @@ import (
 
 	"github.com/SebastianJ/harmony-tx-tests/accounts"
 	"github.com/SebastianJ/harmony-tx-tests/testcases"
+	"github.com/SebastianJ/harmony-tx-tests/testing"
 	"github.com/SebastianJ/harmony-tx-tests/utils"
 
 	"github.com/urfave/cli"
@@ -92,16 +93,19 @@ func startTests(context *cli.Context) error {
 		accs[keyName] = keyDetails["address"]
 	}
 
-	testcaseStatuses := make(map[string]testcases.TestCase)
+	testcaseStatuses := make(map[string]testing.TestCase)
 	testcaseStatuses["SBS1"] = testcases.Sbs1TestCase(accs, passphrase, node)
 	testcaseStatuses["SBS2"] = testcases.Sbs2TestCase(accs, passphrase, node)
+	testcaseStatuses["SBS3"] = testcases.Sbs3TestCase(accs, passphrase, node)
+	testcaseStatuses["SBS4"] = testcases.Sbs4TestCase(accs, passphrase, node)
+	testcaseStatuses["SBS5"] = testcases.Sbs5TestCase(accs, passphrase, node)
 
 	testResults(testcaseStatuses)
 
 	return nil
 }
 
-func testResults(testcaseStatuses map[string]testcases.TestCase) {
+func testResults(testcaseStatuses map[string]testing.TestCase) {
 	successfulCount := 0
 	failedCount := 0
 

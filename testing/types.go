@@ -1,4 +1,4 @@
-package testcases
+package testing
 
 // TestCase - represents a test case
 type TestCase struct {

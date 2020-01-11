@@ -1,4 +1,4 @@
-package testcases
+package testing
 
 import (
 	"github.com/SebastianJ/harmony-tx-tests/accounts"
