@@ -19,6 +19,8 @@ var sbs1TestCase testing.TestCase = testing.TestCase{
 	Expected: true,
 	Verbose:  true,
 	Parameters: testing.TestCaseParameters{
+		Senders: 			  1,
+		Receivers: 			  1,
 		FromShardID:          0,
 		ToShardID:            0,
 		Data:                 "",

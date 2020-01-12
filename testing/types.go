@@ -16,6 +16,8 @@ type TestCase struct {
 
 // TestCaseParameters - represents the test case parameters
 type TestCaseParameters struct {
+	Senders			     int
+	Receivers 			 int
 	FromShardID          uint32
 	ToShardID            uint32
 	Data                 string
