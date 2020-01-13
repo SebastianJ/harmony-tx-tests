@@ -1,17 +1,17 @@
 package utils
 
 import (
+	"io/ioutil"
 	"math/rand"
 	"os"
 	"time"
-	"io/ioutil"
 )
 
 // RandomItemFromMap - select a random item from a map
 func RandomItemFromMap(itemMap map[string]string) (string, string) {
 	var keys []string
 
-	for key, _ := range itemMap {
+	for key := range itemMap {
 		keys = append(keys, key)
 	}
 

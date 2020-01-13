@@ -3,8 +3,8 @@ package testcases
 import (
 	"fmt"
 
-	"github.com/SebastianJ/harmony-tx-tests/config"
 	"github.com/SebastianJ/harmony-tx-tests/balances"
+	"github.com/SebastianJ/harmony-tx-tests/config"
 	"github.com/SebastianJ/harmony-tx-tests/testing"
 	"github.com/SebastianJ/harmony-tx-tests/transactions"
 )
@@ -22,7 +22,7 @@ var Sbs2TestCase testing.TestCase = testing.TestCase{
 		ToShardID:            0,
 		Data:                 "",
 		Amount:               1.0,
-		Nonce: 				  -1, //negative nonce value = fetch the latest nonce from the network
+		Nonce:                -1, //negative nonce value = fetch the latest nonce from the network
 		GasPrice:             1,
 		Count:                1,
 		ConfirmationWaitTime: 16,

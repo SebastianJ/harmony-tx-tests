@@ -1,8 +1,8 @@
 package testing
 
 import (
-	"github.com/SebastianJ/harmony-tx-tests/config"
 	"github.com/SebastianJ/harmony-tx-tests/accounts"
+	"github.com/SebastianJ/harmony-tx-tests/config"
 	"github.com/SebastianJ/harmony-tx-tests/transactions"
 )
 

@@ -1,13 +1,13 @@
 package config
 
 import (
-	"fmt"
 	"errors"
+	"fmt"
 
-	"gopkg.in/yaml.v2"
 	"github.com/SebastianJ/harmony-tx-tests/utils"
-	"github.com/urfave/cli"
 	"github.com/harmony-one/go-sdk/pkg/sharding"
+	"github.com/urfave/cli"
+	"gopkg.in/yaml.v2"
 )
 
 // Configuration - the central configuration for the test suite tool
@@ -22,30 +22,30 @@ type Config struct {
 
 // Network - represents the network settings group
 type Network struct {
-	Name string `yaml:"name"`
-	Node string `yaml:"node"`
+	Name    string  `yaml:"name"`
+	Node    string  `yaml:"node"`
 	GasCost float64 `yaml:"gas_cost"`
-	Shards int
+	Shards  int
 }
 
 // Account - represents the account settings group
 type Account struct {
-	KeysPath string `yaml:"keys_path"`
+	KeysPath   string `yaml:"keys_path"`
 	Passphrase string `yaml:"passphrase"`
 }
 
 // Funding - represents the funding settings group
 type Funding struct {
-	Account FundingAccount `yaml:"account"`
-	MinimumFunds float64 `yaml:"minimum_funds"`
-	ConfirmationWaitTime int `yaml:"confirmation_wait_time"`
-	Attempts int `yaml:"attempts"`
-	GasPrice int64 `yaml:"gas_price"`
+	Account              FundingAccount `yaml:"account"`
+	MinimumFunds         float64        `yaml:"minimum_funds"`
+	ConfirmationWaitTime int            `yaml:"confirmation_wait_time"`
+	Attempts             int            `yaml:"attempts"`
+	GasPrice             int64          `yaml:"gas_price"`
 }
 
 // FundingAccount - represents a funding account
 type FundingAccount struct {
-	Name string `yaml:"name"`
+	Name    string `yaml:"name"`
 	Address string `yaml:"address"`
 }
 
@@ -101,7 +101,7 @@ func loadYamlConfig(path string) error {
 	}
 
 	err = yaml.Unmarshal([]byte(yamlData), &Configuration)
-	
+
 	if err != nil {
 		return err
 	}
@@ -123,7 +123,7 @@ func setNetworkConfig() error {
 }
 
 // NormalizedNetworkName - return a normalized network name
-func NormalizedNetworkName(network string) (string) {
+func NormalizedNetworkName(network string) string {
 	switch network {
 	case "local", "localnet":
 		return "localnet"
@@ -139,7 +139,7 @@ func NormalizedNetworkName(network string) (string) {
 }
 
 // GenerateNodeAddress - generates a node address given a network and a shardID
-func GenerateNodeAddress(network string, shardID uint32) (string) {
+func GenerateNodeAddress(network string, shardID uint32) string {
 	var node string
 
 	switch network {

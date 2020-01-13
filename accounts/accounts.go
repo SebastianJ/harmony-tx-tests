@@ -1,15 +1,15 @@
 package accounts
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"path"
 	"path/filepath"
-	"encoding/json"
 	"regexp"
 
-	"github.com/SebastianJ/harmony-tx-tests/config"
 	"github.com/SebastianJ/harmony-tx-tests/balances"
+	"github.com/SebastianJ/harmony-tx-tests/config"
 	"github.com/SebastianJ/harmony-tx-tests/utils"
 	"github.com/harmony-one/go-sdk/pkg/account"
 	"github.com/harmony-one/go-sdk/pkg/address"
@@ -24,7 +24,7 @@ var (
 
 // Account - represents a simple keystore account
 type Account struct {
-	Name string
+	Name    string
 	Address string
 }
 
@@ -203,12 +203,12 @@ func IdentifyKeys() (map[string]string, error) {
 
 func parseKeyJson(data string) (map[string]interface{}, error) {
 	var rawData interface{}
-	err := json.Unmarshal([]byte(data), &rawData) 
-	  
-  	if err != nil {
-		  return nil, err
+	err := json.Unmarshal([]byte(data), &rawData)
+
+	if err != nil {
+		return nil, err
 	}
-	
+
 	jsonData := rawData.(map[string]interface{})
 	ethAddress := jsonData["address"].(string)
 

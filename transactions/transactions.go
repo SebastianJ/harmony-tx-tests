@@ -1,13 +1,13 @@
 package transactions
 
 import (
-	"github.com/SebastianJ/harmony-tx-tests/config"
 	sdkNonces "github.com/SebastianJ/harmony-sdk/nonces"
 	sdkShards "github.com/SebastianJ/harmony-sdk/shards"
 	sdkTxs "github.com/SebastianJ/harmony-sdk/transactions"
+	"github.com/SebastianJ/harmony-tx-tests/config"
 	"github.com/harmony-one/go-sdk/pkg/common"
-	"github.com/harmony-one/go-sdk/pkg/store"
 	"github.com/harmony-one/go-sdk/pkg/rpc"
+	"github.com/harmony-one/go-sdk/pkg/store"
 )
 
 // IsTransactionSuccessful - checks if a transaction is successful given a transaction response
@@ -51,7 +51,7 @@ func CurrentNonce(address string, networkHandler *rpc.HTTPMessenger) (uint64, er
 // SendTransaction - send transactions
 func SendTransaction(fromAddress string, fromShardID uint32, toAddress string, toShardID uint32, amount float64, nonce int, gasPrice int64, txData string, confirmationWaitTime int) (map[string]interface{}, error) {
 	node := config.GenerateNodeAddress(config.Configuration.Network.Name, fromShardID)
-	
+
 	networkHandler, err := NetworkHandler(fromShardID)
 	if err != nil {
 		return nil, err

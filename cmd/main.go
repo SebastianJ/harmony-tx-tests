@@ -5,10 +5,10 @@ import (
 	"os"
 	"runtime"
 
-	"github.com/SebastianJ/harmony-tx-tests/config"
-	"github.com/SebastianJ/harmony-tx-tests/testcases"
-	"github.com/SebastianJ/harmony-tx-tests/funding"
 	"github.com/SebastianJ/harmony-tx-tests/accounts"
+	"github.com/SebastianJ/harmony-tx-tests/config"
+	"github.com/SebastianJ/harmony-tx-tests/funding"
+	"github.com/SebastianJ/harmony-tx-tests/testcases"
 
 	"github.com/urfave/cli"
 )
@@ -102,7 +102,7 @@ func executeTests(accs []string) {
 func testResults() {
 	successfulCount := 0
 	failedCount := 0
-	
+
 	for _, testCase := range testcases.Results {
 		if testCase.Result == testCase.Expected {
 			successfulCount++

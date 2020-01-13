@@ -3,8 +3,8 @@ package balances
 import (
 	"fmt"
 
-	"github.com/SebastianJ/harmony-tx-tests/config"
 	sdkBalances "github.com/SebastianJ/harmony-sdk/balances"
+	"github.com/SebastianJ/harmony-tx-tests/config"
 )
 
 // GetShardBalance - gets the balance for a given address and shard
@@ -34,7 +34,7 @@ func FilterMinimumBalanceAccounts(accounts map[string]string, minimumBalance flo
 	return hasFunds, missingFunds, nil
 }
 
-// OutputBalanceStatusForAddresses - outputs balance status 
+// OutputBalanceStatusForAddresses - outputs balance status
 func OutputBalanceStatusForAddresses(accounts map[string]string, minimumBalance float64) {
 	hasFunds, missingFunds, err := FilterMinimumBalanceAccounts(accounts, minimumBalance)
 
@@ -43,7 +43,7 @@ func OutputBalanceStatusForAddresses(accounts map[string]string, minimumBalance 
 		for keyName, address := range hasFunds {
 			fmt.Println(fmt.Sprintf("%s / %s", keyName, address))
 		}
-	
+
 		fmt.Println(fmt.Sprintf("\nThe following keys don't hold sufficient funds of >%f:", minimumBalance))
 		for keyName, address := range missingFunds {
 			fmt.Println(fmt.Sprintf("%s / %s", keyName, address))

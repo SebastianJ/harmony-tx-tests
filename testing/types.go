@@ -17,16 +17,16 @@ type TestCase struct {
 
 // TestCaseParameters - represents the test case parameters
 type TestCaseParameters struct {
-	SenderCount			 int
-	Senders 		 	 []string
-	ReceiverCount 		 int
-	Receivers 	         []string
+	SenderCount          int
+	Senders              []string
+	ReceiverCount        int
+	Receivers            []string
 	FromShardID          uint32
 	ToShardID            uint32
 	Data                 string
 	Amount               float64
 	GasPrice             int64
-	Nonce 				 int
+	Nonce                int
 	Count                int
 	ConfirmationWaitTime int
 }

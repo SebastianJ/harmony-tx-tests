@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/SebastianJ/harmony-tx-tests/config"
+	sdkBalances "github.com/SebastianJ/harmony-sdk/balances"
 	"github.com/SebastianJ/harmony-tx-tests/accounts"
 	"github.com/SebastianJ/harmony-tx-tests/balances"
+	"github.com/SebastianJ/harmony-tx-tests/config"
 	"github.com/SebastianJ/harmony-tx-tests/transactions"
-	sdkBalances "github.com/SebastianJ/harmony-sdk/balances"
 )
 
 // SetupFundingAccount - sets up the initial funding account
@@ -58,7 +58,7 @@ func SetupFundingAccount(accs []string) (err error) {
 // FundAccounts - funds a given set of accounts in a given set of shards using a set of source accounts
 func FundAccounts(sources []string, count int, amount float64, prefix string, gasPrice int64, confirmationWaitTime int) (map[string]string, error) {
 	fundedAccounts := make(map[string]string)
-	
+
 	for _, source := range sources {
 		for i := 0; i < count; i++ {
 			accountName, accountAddress, err := fundAccount(source, amount, prefix, i, gasPrice, confirmationWaitTime)
@@ -81,7 +81,7 @@ func fundAccount(source string, amount float64, prefix string, index int, gasPri
 
 	// Remove the account just to make sure that we're starting using a clean slate
 	accounts.RemoveAccount(accountName)
-	
+
 	err := accounts.GenerateAccount(accountName)
 
 	if err != nil {

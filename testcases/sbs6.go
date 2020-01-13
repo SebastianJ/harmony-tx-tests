@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/SebastianJ/harmony-tx-tests/config"
 	"github.com/SebastianJ/harmony-tx-tests/accounts"
 	"github.com/SebastianJ/harmony-tx-tests/balances"
-	"github.com/SebastianJ/harmony-tx-tests/testing"
+	"github.com/SebastianJ/harmony-tx-tests/config"
 	"github.com/SebastianJ/harmony-tx-tests/funding"
+	"github.com/SebastianJ/harmony-tx-tests/testing"
 	"github.com/SebastianJ/harmony-tx-tests/transactions"
 )
 
@@ -23,8 +23,8 @@ var Sbs6TestCase testing.TestCase = testing.TestCase{
 	Parameters: testing.TestCaseParameters{
 		FromShardID:          0,
 		ToShardID:            0,
-		SenderCount: 		  10,
-		ReceiverCount: 		  1,
+		SenderCount:          10,
+		ReceiverCount:        1,
 		Data:                 "",
 		Amount:               1.0,
 		GasPrice:             1,
@@ -52,11 +52,11 @@ func RunSbs6TestCase() {
 
 	successfulCount := 0
 	for response := range responses {
-        if response {
+		if response {
 			successfulCount++
 		}
 	}
-	
+
 	Sbs6TestCase.Result = (successfulCount == Sbs6TestCase.Parameters.SenderCount)
 
 	testing.Title(Sbs6TestCase.Name, "footer", Sbs6TestCase.Verbose)
@@ -66,7 +66,7 @@ func RunSbs6TestCase() {
 
 func performSingleAccountTest(senderAccount accounts.Account, responses chan<- bool, waitGroup *sync.WaitGroup) {
 	defer waitGroup.Done()
-	
+
 	testing.Log(Sbs6TestCase.Name, fmt.Sprintf("Using sender account: %s and address: %s", senderAccount.Name, senderAccount.Address), Sbs6TestCase.Verbose)
 
 	receiverAccountName := fmt.Sprintf("%s_Receiver", senderAccount.Name)
@@ -116,7 +116,7 @@ func generateAndFundSenderAccounts() (senderAccounts []accounts.Account, err err
 	nonce = int(receivedNonce)
 
 	amount := (Sbs6TestCase.Parameters.Amount + config.Configuration.Network.GasCost)
-	
+
 	var waitGroup sync.WaitGroup
 
 	senderAccountsChannel := make(chan accounts.Account, Sbs6TestCase.Parameters.SenderCount)
