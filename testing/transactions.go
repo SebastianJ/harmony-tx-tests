@@ -8,17 +8,22 @@ func ConvertToTestCaseTransaction(fromAddress string, toAddress string, rawTx ma
 		return TestCaseTransaction{Error: err}
 	}
 
-	txHash := rawTx["transactionHash"].(string)
-	success := transactions.IsTransactionSuccessful(rawTx)
+	var testCaseTransaction TestCaseTransaction
 
-	testCaseTransaction := TestCaseTransaction{
-		FromAddress:     fromAddress,
-		FromShardID:     params.FromShardID,
-		ToAddress:       toAddress,
-		ToShardID:       params.ToShardID,
-		TransactionHash: txHash,
-		Success:         success,
-		Response:        rawTx,
+	txHash := rawTx["transactionHash"].(string)
+
+	if txHash != "" {
+		success := transactions.IsTransactionSuccessful(rawTx)
+
+		testCaseTransaction = TestCaseTransaction{
+			FromAddress:     fromAddress,
+			FromShardID:     params.FromShardID,
+			ToAddress:       toAddress,
+			ToShardID:       params.ToShardID,
+			TransactionHash: txHash,
+			Success:         success,
+			Response:        rawTx,
+		}
 	}
 
 	return testCaseTransaction

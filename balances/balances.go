@@ -2,69 +2,51 @@ package balances
 
 import (
 	"fmt"
-	"github.com/SebastianJ/harmony-tx-sender/balances"
+
+	"github.com/SebastianJ/harmony-tx-tests/config"
+	sdkBalances "github.com/SebastianJ/harmony-sdk/balances"
 )
 
 // GetShardBalance - gets the balance for a given address and shard
-func GetShardBalance(address string, shardID uint32, node string) (float64, error) {
-	shardBalances, err := balances.CheckAllShardBalances(node, address)
-
-	if err != nil {
-		return -99999.0, err
-	}
-
-	shardBalance := shardBalances[int(shardID)]
-
-	return shardBalance, nil
+func GetShardBalance(address string, shardID uint32) (float64, error) {
+	return sdkBalances.GetShardBalance(address, shardID, config.Configuration.Network.Name)
 }
 
-// GetTotalBalance - gets the total balance across all shards for a given address
-func GetTotalBalance(address string, node string) (float64, error) {
-	shardBalances, err := balances.CheckAllShardBalances(node, address)
-
-	if err != nil {
-		return -99999.0, err
-	}
-
-	totalBalance := 0.0
-
-	for _, balance := range shardBalances {
-		totalBalance += balance
-	}
-
-	return totalBalance, nil
-}
-
-// OutputBalanceStatusForAddresses - outputs which keys/accounts that hold funds and which don't
-func OutputBalanceStatusForAddresses(accounts map[string]string, node string) error {
+// FilterMinimumBalanceAccounts - Filters out a list of accounts without any balance
+func FilterMinimumBalanceAccounts(accounts map[string]string, minimumBalance float64) (map[string]string, map[string]string, error) {
 	hasFunds := make(map[string]string)
 	missingFunds := make(map[string]string)
 
 	for keyName, address := range accounts {
-		totalBalance, err := GetTotalBalance(address, node)
+		totalBalance, err := sdkBalances.GetTotalBalance(address, config.Configuration.Network.Name)
 
 		if err != nil {
-			return err
+			return nil, nil, err
 		}
 
-		if totalBalance > 0.0 {
-			fmt.Println(fmt.Sprintf("Keyfile with name: %s and address: %s holds a total of %f ONE", keyName, address, totalBalance))
+		if totalBalance > minimumBalance {
 			hasFunds[keyName] = address
 		} else {
-			fmt.Println(fmt.Sprintf("Keyfile with name: %s and address: %s doesn't hold any funds!", keyName, address))
 			missingFunds[keyName] = address
 		}
 	}
 
-	fmt.Println("\nThe following keys hold funds:")
-	for keyName, address := range hasFunds {
-		fmt.Println(fmt.Sprintf("%s / %s", keyName, address))
-	}
+	return hasFunds, missingFunds, nil
+}
 
-	fmt.Println("\nThe following keys don't hold any funds:")
-	for keyName, address := range missingFunds {
-		fmt.Println(fmt.Sprintf("%s / %s", keyName, address))
-	}
+// OutputBalanceStatusForAddresses - outputs balance status 
+func OutputBalanceStatusForAddresses(accounts map[string]string, minimumBalance float64) {
+	hasFunds, missingFunds, err := FilterMinimumBalanceAccounts(accounts, minimumBalance)
 
-	return nil
+	if err == nil {
+		fmt.Println(fmt.Sprintf("\nThe following keys hold sufficient funds >%f:", minimumBalance))
+		for keyName, address := range hasFunds {
+			fmt.Println(fmt.Sprintf("%s / %s", keyName, address))
+		}
+	
+		fmt.Println(fmt.Sprintf("\nThe following keys don't hold sufficient funds of >%f:", minimumBalance))
+		for keyName, address := range missingFunds {
+			fmt.Println(fmt.Sprintf("%s / %s", keyName, address))
+		}
+	}
 }

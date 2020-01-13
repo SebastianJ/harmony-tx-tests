@@ -1,16 +1,14 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"os"
-	"path/filepath"
 	"runtime"
 
-	"github.com/SebastianJ/harmony-tx-tests/accounts"
+	"github.com/SebastianJ/harmony-tx-tests/config"
 	"github.com/SebastianJ/harmony-tx-tests/testcases"
-	"github.com/SebastianJ/harmony-tx-tests/testing"
-	"github.com/SebastianJ/harmony-tx-tests/utils"
+	"github.com/SebastianJ/harmony-tx-tests/funding"
+	"github.com/SebastianJ/harmony-tx-tests/accounts"
 
 	"github.com/urfave/cli"
 )
@@ -30,21 +28,39 @@ func main() {
 
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
-			Name:  "node",
-			Usage: "Which node endpoint to use for API commands",
-			Value: "https://api.s0.pga.hmny.io",
+			Name:  "network",
+			Usage: "Which network to use (valid options: localnet, devnet, testnet, mainnet)",
+			Value: "",
+		},
+
+		cli.StringFlag{
+			Name:  "config",
+			Usage: "The path to the config containing the test suite settings",
+			Value: "./config.yml",
+		},
+
+		cli.StringFlag{
+			Name:  "funding-address",
+			Usage: "Which address to use to fund test accounts (tokens will also be returned to this address",
+			Value: "",
+		},
+
+		cli.Float64Flag{
+			Name:  "minimum-funds",
+			Usage: "The minimum funds a source wallet needs to have to be included in the funding process",
+			Value: 10.0,
 		},
 
 		cli.StringFlag{
 			Name:  "passphrase",
-			Usage: "Passphrase to use for unlocking the keystore",
+			Usage: "Passphrase to use for unlocking the keystores",
 			Value: "",
 		},
 
 		cli.StringFlag{
 			Name:  "keys",
 			Usage: "Where the wallet keys are located",
-			Value: "./keys",
+			Value: "",
 		},
 	}
 
@@ -60,56 +76,34 @@ func main() {
 }
 
 func startTests(context *cli.Context) error {
-	node := context.GlobalString("node")
-	passphrase := context.GlobalString("passphrase")
-
-	if node == "" {
-		return errors.New("you need to specify a node to use for the API calls")
-	}
-
-	keysPath, _ := filepath.Abs(context.GlobalString("keys"))
-	keyFiles, err := utils.IdentifyKeyFiles(keysPath)
+	err := config.Configure(context)
+	accs, err := accounts.LoadSourceAccounts()
 
 	if err != nil {
 		return err
 	}
 
-	fmt.Println(fmt.Sprintf("Found a total of %d keys", len(keyFiles)))
-
-	accs := make(map[string]string)
-
-	for _, keyFile := range keyFiles {
-		//fmt.Println(fmt.Sprintf("Keyfile path found: %s", keyFile))
-
-		keyDetails := utils.ParseKeyDetailsFromKeyFile(keyFile)
-		keyName := fmt.Sprintf("_tx_gen_NEW_FUNDED_ACC_%s", keyDetails["id"])
-
-		err := accounts.ImportAccount(keyFile, keyName, passphrase, keyDetails)
-
-		if err != nil {
-			return err
-		}
-
-		accs[keyName] = keyDetails["address"]
+	if err = funding.SetupFundingAccount(accs); err != nil {
+		return err
 	}
 
-	testcaseStatuses := make(map[string]testing.TestCase)
-	testcaseStatuses["SBS1"] = testcases.Sbs1TestCase(accs, passphrase, node)
-	testcaseStatuses["SBS2"] = testcases.Sbs2TestCase(accs, passphrase, node)
-	testcaseStatuses["SBS3"] = testcases.Sbs3TestCase(accs, passphrase, node)
-	testcaseStatuses["SBS4"] = testcases.Sbs4TestCase(accs, passphrase, node)
-	testcaseStatuses["SBS5"] = testcases.Sbs5TestCase(accs, passphrase, node)
-
-	testResults(testcaseStatuses)
+	executeTests(accs)
+	testResults()
 
 	return nil
 }
 
-func testResults(testcaseStatuses map[string]testing.TestCase) {
+func executeTests(accs []string) {
+	for _, testCase := range testcases.Registry {
+		testCase.Function.(func())()
+	}
+}
+
+func testResults() {
 	successfulCount := 0
 	failedCount := 0
-
-	for _, testCase := range testcaseStatuses {
+	
+	for _, testCase := range testcases.Results {
 		if testCase.Result == testCase.Expected {
 			successfulCount++
 		} else {
@@ -118,18 +112,18 @@ func testResults(testcaseStatuses map[string]testing.TestCase) {
 	}
 
 	fmt.Println("------------------------------------------------------------")
-	fmt.Println(fmt.Sprintf("Test suite status - executed a total of %d test case(s):", len(testcaseStatuses)))
+	fmt.Println(fmt.Sprintf("Test suite status - executed a total of %d test case(s):", len(testcases.Results)))
 	fmt.Println(fmt.Sprintf("Successful: %d", successfulCount))
 	fmt.Println(fmt.Sprintf("Failed: %d", failedCount))
 	fmt.Println("------------------------------------------------------------\n")
 
 	fmt.Println("Executed test cases:")
 	fmt.Println("------------------------------------------------------------")
-	for testCaseName, testCase := range testcaseStatuses {
+	for _, testCase := range testcases.Results {
 		if testCase.Result == testCase.Expected {
-			fmt.Println(fmt.Sprintf("Testcase %s: success", testCaseName))
+			fmt.Println(fmt.Sprintf("Testcase %s: success", testCase.Name))
 		} else {
-			fmt.Println(fmt.Sprintf("Testcase %s: failed", testCaseName))
+			fmt.Println(fmt.Sprintf("Testcase %s: failed", testCase.Name))
 		}
 	}
 	fmt.Println("------------------------------------------------------------\n")

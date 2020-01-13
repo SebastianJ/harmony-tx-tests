@@ -1,0 +1,17 @@
+network:
+  name: "localnet"
+  node: "http://localhost:9500"
+  gas_cost: 0.0001
+
+accounts:
+  keys: "./keys"
+  passphrase: ""
+  
+funding:
+  account:
+    name: "TestSuiteFundingAccount"
+    address: ""
+  minimum_funds: 10.0
+  confirmation_wait_time: 16
+  attempts: 10
+  gas_price: 1

@@ -12,12 +12,15 @@ type TestCase struct {
 	Verbose      bool
 	Parameters   TestCaseParameters
 	Transactions []TestCaseTransaction
+	Function     interface{}
 }
 
 // TestCaseParameters - represents the test case parameters
 type TestCaseParameters struct {
-	Senders			     int
-	Receivers 			 int
+	SenderCount			 int
+	Senders 		 	 []string
+	ReceiverCount 		 int
+	Receivers 	         []string
 	FromShardID          uint32
 	ToShardID            uint32
 	Data                 string

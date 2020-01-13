@@ -1,9 +1,10 @@
 package transactions
 
 import (
-	"github.com/SebastianJ/harmony-tx-sender/nonces"
-	"github.com/SebastianJ/harmony-tx-sender/shards"
-	senderTxs "github.com/SebastianJ/harmony-tx-sender/transactions"
+	"github.com/SebastianJ/harmony-tx-tests/config"
+	sdkNonces "github.com/SebastianJ/harmony-sdk/nonces"
+	sdkShards "github.com/SebastianJ/harmony-sdk/shards"
+	sdkTxs "github.com/SebastianJ/harmony-sdk/transactions"
 	"github.com/harmony-one/go-sdk/pkg/common"
 	"github.com/harmony-one/go-sdk/pkg/store"
 )
@@ -20,31 +21,41 @@ func IsTransactionSuccessful(txResponse map[string]interface{}) (success bool) {
 }
 
 // SendSameShardTransaction - send a transaction using the same shard for both the receiver and the sender
-func SendSameShardTransaction(fromAddress string, toAddress string, shardID uint32, amount float64, gasPrice int64, txData string, passphrase string, node string, confirmationWaitTime int) (map[string]interface{}, error) {
-	return SendTransaction(fromAddress, shardID, toAddress, shardID, amount, gasPrice, txData, passphrase, node, confirmationWaitTime)
+func SendSameShardTransaction(fromAddress string, toAddress string, shardID uint32, amount float64, gasPrice int64, txData string, confirmationWaitTime int) (map[string]interface{}, error) {
+	return SendTransaction(fromAddress, shardID, toAddress, shardID, amount, gasPrice, txData, confirmationWaitTime)
 }
 
 // SendTransaction - send transactions
-func SendTransaction(fromAddress string, fromShardID uint32, toAddress string, toShardID uint32, amount float64, gasPrice int64, txData string, passphrase string, node string, confirmationWaitTime int) (map[string]interface{}, error) {
-	networkHandler, err := shards.HandlerForShard(fromShardID, node)
+func SendTransaction(fromAddress string, fromShardID uint32, toAddress string, toShardID uint32, amount float64, gasPrice int64, txData string, confirmationWaitTime int) (map[string]interface{}, error) {
+	node := config.GenerateNodeAddress(config.Configuration.Network.Name, fromShardID)
+	
+	networkHandler, err := sdkShards.HandlerForShard(fromShardID, node)
 	if err != nil {
 		return nil, err
 	}
 
-	chain := &common.Chain.DevNet
+	chain := &common.Chain.TestNet
 
-	currentNonce, err := nonces.GetNonceFromInput(fromAddress, "", networkHandler)
+	if config.Configuration.Network.Name == "localnet" {
+		if confirmationWaitTime > 0 {
+			confirmationWaitTime = confirmationWaitTime * 2
+		}
+	} else {
+		chain, err = common.StringToChainID(config.Configuration.Network.Name)
+	}
+
+	currentNonce, err := sdkNonces.GetNonceFromInput(fromAddress, "", networkHandler)
 
 	if err != nil {
 		return nil, err
 	}
 
-	keystore, account, err := store.UnlockedKeystore(fromAddress, passphrase)
+	keystore, account, err := store.UnlockedKeystore(fromAddress, config.Configuration.Account.Passphrase)
 	if err != nil {
 		return nil, err
 	}
 
-	txResult, err := senderTxs.SendTransaction(keystore, account, networkHandler, chain, fromAddress, fromShardID, toAddress, toShardID, amount, gasPrice, currentNonce, txData, passphrase, node, confirmationWaitTime)
+	txResult, err := sdkTxs.SendTransaction(keystore, account, networkHandler, chain, fromAddress, fromShardID, toAddress, toShardID, amount, gasPrice, currentNonce, txData, config.Configuration.Account.Passphrase, node, confirmationWaitTime)
 
 	if err != nil {
 		return nil, err
