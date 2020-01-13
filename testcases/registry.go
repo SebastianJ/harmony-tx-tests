@@ -19,7 +19,7 @@ var (
 )
 
 func init() {
-	/*Registry = append(Registry, RegistryItem{
+	Registry = append(Registry, RegistryItem{
 		TestCase: Sbs1TestCase,
 		Function: RunSbs1TestCase,
 	})
@@ -47,7 +47,7 @@ func init() {
 	Registry = append(Registry, RegistryItem{
 		TestCase: Sbs6TestCase,
 		Function: RunSbs6TestCase,
-	})*/
+	})
 
 	Registry = append(Registry, RegistryItem{
 		TestCase: Sbs8TestCase,
