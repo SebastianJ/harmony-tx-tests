@@ -7,6 +7,7 @@ import (
 	sdkTxs "github.com/SebastianJ/harmony-sdk/transactions"
 	"github.com/harmony-one/go-sdk/pkg/common"
 	"github.com/harmony-one/go-sdk/pkg/store"
+	"github.com/harmony-one/go-sdk/pkg/rpc"
 )
 
 // IsTransactionSuccessful - checks if a transaction is successful given a transaction response
@@ -21,15 +22,37 @@ func IsTransactionSuccessful(txResponse map[string]interface{}) (success bool) {
 }
 
 // SendSameShardTransaction - send a transaction using the same shard for both the receiver and the sender
-func SendSameShardTransaction(fromAddress string, toAddress string, shardID uint32, amount float64, gasPrice int64, txData string, confirmationWaitTime int) (map[string]interface{}, error) {
-	return SendTransaction(fromAddress, shardID, toAddress, shardID, amount, gasPrice, txData, confirmationWaitTime)
+func SendSameShardTransaction(fromAddress string, toAddress string, shardID uint32, amount float64, nonce int, gasPrice int64, txData string, confirmationWaitTime int) (map[string]interface{}, error) {
+	return SendTransaction(fromAddress, shardID, toAddress, shardID, amount, nonce, gasPrice, txData, confirmationWaitTime)
+}
+
+// NetworkHandler - resolve the RPC/HTTP Messenger to use for remote commands
+func NetworkHandler(shardID uint32) (*rpc.HTTPMessenger, error) {
+	node := config.GenerateNodeAddress(config.Configuration.Network.Name, shardID)
+	networkHandler, err := sdkShards.HandlerForShard(shardID, node)
+	if err != nil {
+		return nil, err
+	}
+
+	return networkHandler, nil
+}
+
+// CurrentNonce - fetch the current nonce for a given address and RPC interface
+func CurrentNonce(address string, networkHandler *rpc.HTTPMessenger) (uint64, error) {
+	currentNonce, err := sdkNonces.GetNonceFromInput(address, "", networkHandler)
+
+	if err != nil {
+		return 0, err
+	}
+
+	return currentNonce, nil
 }
 
 // SendTransaction - send transactions
-func SendTransaction(fromAddress string, fromShardID uint32, toAddress string, toShardID uint32, amount float64, gasPrice int64, txData string, confirmationWaitTime int) (map[string]interface{}, error) {
+func SendTransaction(fromAddress string, fromShardID uint32, toAddress string, toShardID uint32, amount float64, nonce int, gasPrice int64, txData string, confirmationWaitTime int) (map[string]interface{}, error) {
 	node := config.GenerateNodeAddress(config.Configuration.Network.Name, fromShardID)
 	
-	networkHandler, err := sdkShards.HandlerForShard(fromShardID, node)
+	networkHandler, err := NetworkHandler(fromShardID)
 	if err != nil {
 		return nil, err
 	}
@@ -44,10 +67,15 @@ func SendTransaction(fromAddress string, fromShardID uint32, toAddress string, t
 		chain, err = common.StringToChainID(config.Configuration.Network.Name)
 	}
 
-	currentNonce, err := sdkNonces.GetNonceFromInput(fromAddress, "", networkHandler)
+	var currentNonce uint64
 
-	if err != nil {
-		return nil, err
+	if nonce < 0 {
+		currentNonce, err = CurrentNonce(fromAddress, networkHandler)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		currentNonce = uint64(nonce)
 	}
 
 	keystore, account, err := store.UnlockedKeystore(fromAddress, config.Configuration.Account.Passphrase)

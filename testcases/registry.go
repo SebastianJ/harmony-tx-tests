@@ -43,4 +43,9 @@ func init() {
 		TestCase: Sbs5TestCase,
 		Function: RunSbs5TestCase,
 	})
+
+	Registry = append(Registry, RegistryItem{
+		TestCase: Sbs6TestCase,
+		Function: RunSbs6TestCase,
+	})
 }

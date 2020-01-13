@@ -23,6 +23,7 @@ var Sbs4TestCase testing.TestCase = testing.TestCase{
 		ToShardID:            0,
 		Data:                 "",
 		Amount:               1.00E-09,
+		Nonce: 				  -1, //negative nonce value = fetch the latest nonce from the network
 		GasPrice:             1,
 		Count:                1,
 		ConfirmationWaitTime: 16,
@@ -48,7 +49,7 @@ func RunSbs4TestCase() {
 	testing.Log(Sbs4TestCase.Name, fmt.Sprintf("Will let the transaction wait up to %d seconds to try to get finalized within 2 blocks", Sbs4TestCase.Parameters.ConfirmationWaitTime), Sbs4TestCase.Verbose)
 	testing.Log(Sbs4TestCase.Name, "Sending transaction...", Sbs4TestCase.Verbose)
 
-	rawTx, err := transactions.SendTransaction(config.Configuration.Funding.Account.Address, Sbs4TestCase.Parameters.FromShardID, toAddress, Sbs4TestCase.Parameters.ToShardID, Sbs4TestCase.Parameters.Amount, Sbs4TestCase.Parameters.GasPrice, Sbs4TestCase.Parameters.Data, Sbs4TestCase.Parameters.ConfirmationWaitTime)
+	rawTx, err := transactions.SendTransaction(config.Configuration.Funding.Account.Address, Sbs4TestCase.Parameters.FromShardID, toAddress, Sbs4TestCase.Parameters.ToShardID, Sbs4TestCase.Parameters.Amount, Sbs4TestCase.Parameters.Nonce, Sbs4TestCase.Parameters.GasPrice, Sbs4TestCase.Parameters.Data, Sbs4TestCase.Parameters.ConfirmationWaitTime)
 	testCaseTx := testing.ConvertToTestCaseTransaction(config.Configuration.Funding.Account.Address, toAddress, rawTx, Sbs4TestCase.Parameters, err)
 	Sbs4TestCase.Transactions = append(Sbs4TestCase.Transactions, testCaseTx)
 

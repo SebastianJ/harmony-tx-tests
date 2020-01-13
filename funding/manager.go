@@ -44,7 +44,7 @@ func SetupFundingAccount(accs []string) (err error) {
 
 				if err == nil && availableShardBalance > 0.0 {
 					waitGroup.Add(1)
-					go asyncPerformFundingTransaction(address, uint32(shard), config.Configuration.Funding.Account.Address, uint32(shard), amount, config.Configuration.Funding.GasPrice, config.Configuration.Funding.ConfirmationWaitTime, config.Configuration.Funding.Attempts, &waitGroup)
+					go AsyncPerformFundingTransaction(address, uint32(shard), config.Configuration.Funding.Account.Address, uint32(shard), amount, -1, config.Configuration.Funding.GasPrice, config.Configuration.Funding.ConfirmationWaitTime, config.Configuration.Funding.Attempts, &waitGroup)
 				}
 			}
 		}
@@ -92,7 +92,7 @@ func fundAccount(source string, amount float64, prefix string, index int, gasPri
 	toAddress, err := accounts.GenerateAccountAndReturnAddress(accountName)
 
 	for shard := 0; shard < config.Configuration.Network.Shards; shard++ {
-		success := performFundingTransaction(sourceAddress, 0, toAddress, uint32(shard), amount, gasPrice, confirmationWaitTime, 10)
+		success := PerformFundingTransaction(sourceAddress, 0, toAddress, uint32(shard), amount, -1, gasPrice, confirmationWaitTime, 10)
 
 		if !success {
 			return "", "", fmt.Errorf("failed to fund account %s on shard %d with amount %f", toAddress, shard, amount)
@@ -102,13 +102,15 @@ func fundAccount(source string, amount float64, prefix string, index int, gasPri
 	return accountName, toAddress, nil
 }
 
-func asyncPerformFundingTransaction(fromAddress string, fromShardID uint32, toAddress string, toShardID uint32, amount float64, gasPrice int64, confirmationWaitTime int, attempts int, waitGroup *sync.WaitGroup) {
-	performFundingTransaction(fromAddress, fromShardID, toAddress, toShardID, amount, gasPrice, confirmationWaitTime, attempts)
+// AsyncPerformFundingTransaction - performs an asynchronous call to PerformFundingTransaction and calls Done() on the waitGroup
+func AsyncPerformFundingTransaction(fromAddress string, fromShardID uint32, toAddress string, toShardID uint32, amount float64, nonce int, gasPrice int64, confirmationWaitTime int, attempts int, waitGroup *sync.WaitGroup) {
+	PerformFundingTransaction(fromAddress, fromShardID, toAddress, toShardID, amount, nonce, gasPrice, confirmationWaitTime, attempts)
 
 	defer waitGroup.Done()
 }
 
-func performFundingTransaction(fromAddress string, fromShardID uint32, toAddress string, toShardID uint32, amount float64, gasPrice int64, confirmationWaitTime int, attempts int) bool {
+// PerformFundingTransaction - performs a funding transaction including automatic retries
+func PerformFundingTransaction(fromAddress string, fromShardID uint32, toAddress string, toShardID uint32, amount float64, nonce int, gasPrice int64, confirmationWaitTime int, attempts int) bool {
 	success := false
 
 	for ok := true; ok; ok = !success {
@@ -117,9 +119,7 @@ func performFundingTransaction(fromAddress string, fromShardID uint32, toAddress
 		if ok && attempts > 0 {
 			fmt.Println(fmt.Sprintf("Attempting funding transaction from %s (shard: %d) to %s (shard: %d) of amount %f!", fromAddress, fromShardID, toAddress, toShardID, amount))
 
-			rawTx, err := transactions.SendTransaction(fromAddress, fromShardID, toAddress, toShardID, amount, gasPrice, "", confirmationWaitTime)
-
-			fmt.Println(fmt.Sprintf("rawTx: %v", rawTx))
+			rawTx, err := transactions.SendTransaction(fromAddress, fromShardID, toAddress, toShardID, amount, nonce, gasPrice, "", confirmationWaitTime)
 
 			if err != nil {
 				success = false

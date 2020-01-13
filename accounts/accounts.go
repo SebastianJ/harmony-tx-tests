@@ -22,6 +22,12 @@ var (
 	addressRegex = regexp.MustCompile(`"address":"(?P<address>[a-z0-9]+)"`)
 )
 
+// Account - represents a simple keystore account
+type Account struct {
+	Name string
+	Address string
+}
+
 // LoadSourceAccounts - loads the source accounts and imports them to the keystore when necessary
 func LoadSourceAccounts() (accs []string, err error) {
 	accountMapping, err := IdentifyKeys()

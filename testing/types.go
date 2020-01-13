@@ -26,6 +26,7 @@ type TestCaseParameters struct {
 	Data                 string
 	Amount               float64
 	GasPrice             int64
+	Nonce 				 int
 	Count                int
 	ConfirmationWaitTime int
 }
