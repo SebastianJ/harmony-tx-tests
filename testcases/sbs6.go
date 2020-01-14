@@ -12,7 +12,7 @@ import (
 	"github.com/SebastianJ/harmony-tx-tests/transactions"
 )
 
-// Sbs6TestCase - defines the common properties for the SBS5 test case
+// Sbs6TestCase - defines the common properties for the SBS6 test case
 var Sbs6TestCase testing.TestCase = testing.TestCase{
 	Scenario: "Same Beacon Shard",
 	Name:     "SBS6",
