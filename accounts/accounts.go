@@ -159,6 +159,19 @@ func GenerateAccountAndReturnAddress(name string) (string, error) {
 	return address, nil
 }
 
+// GenerateTypedAccount - generates a new account and returns it as an Account type
+func GenerateTypedAccount(name string) (account Account) {
+	account = Account{}
+	address, err := GenerateAccountAndReturnAddress(name)
+
+	if err == nil && address != "" {
+		account.Name = name
+		account.Address = address
+	}
+
+	return account
+}
+
 // RemoveAccount - removes an account from the keystore
 func RemoveAccount(name string) {
 	uDir, _ := homedir.Dir()

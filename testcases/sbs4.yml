@@ -1,0 +1,19 @@
+scenario: "Same Beacon Shard"
+name: "SBS4"
+goal: "Nano transfer"
+priority: 0
+active: true
+expected: true
+verbose: true
+test_type: "standard"
+parameters:
+  sender_count: 1
+  receiver_count: 1
+  from_shard_id: 0
+  to_shard_id: 0
+  data: ""
+  amount: 1.00E-09
+  nonce: -1
+  gas_price: 1
+  count: 1
+  confirmation_wait_time: 16

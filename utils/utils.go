@@ -1,11 +1,30 @@
 package utils
 
 import (
+	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"math/rand"
 	"os"
+	"path/filepath"
 	"time"
 )
+
+// ParseYaml - parses yaml into a specific type
+func ParseYaml(path string, entity interface{}) error {
+	yamlData, err := ReadFileToString(path)
+
+	if err != nil {
+		return err
+	}
+
+	err = yaml.Unmarshal([]byte(yamlData), entity)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
 
 // RandomItemFromMap - select a random item from a map
 func RandomItemFromMap(itemMap map[string]string) (string, string) {
@@ -50,4 +69,14 @@ func ReadFileToString(filePath string) (string, error) {
 	} else {
 		return "", nil
 	}
+}
+
+// GlobFiles - find a set of files matching a specific pattern
+func GlobFiles(pattern string) ([]string, error) {
+	files, err := filepath.Glob(pattern)
+	if err != nil {
+		return nil, err
+	}
+
+	return files, nil
 }

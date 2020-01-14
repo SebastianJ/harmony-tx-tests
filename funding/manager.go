@@ -32,7 +32,7 @@ func SetupFundingAccount(accs []string) (err error) {
 		return err
 	}
 
-	fmt.Println(fmt.Sprintf("The current balance of the funding account %s / %s is: %f", config.Configuration.Funding.Account.Name, config.Configuration.Funding.Account.Address, totalBalance))
+	fmt.Println(fmt.Sprintf("\nThe current balance of the funding account %s / %s is: %f", config.Configuration.Funding.Account.Name, config.Configuration.Funding.Account.Address, totalBalance))
 
 	if totalBalance <= config.Configuration.Funding.MinimumFunds {
 		var waitGroup sync.WaitGroup
@@ -53,6 +53,53 @@ func SetupFundingAccount(accs []string) (err error) {
 	}
 
 	return nil
+}
+
+// GenerateAndFundAccounts - generate and fund a set of accounts
+func GenerateAndFundAccounts(count int, nameTemplate string, fromShardID uint32, toShardID uint32, amount float64) (accs []accounts.Account, err error) {
+	networkHandler, err := transactions.NetworkHandler(fromShardID)
+	if err != nil {
+		return nil, err
+	}
+
+	nonce := -1
+	receivedNonce, err := transactions.CurrentNonce(config.Configuration.Funding.Account.Address, networkHandler)
+	if err != nil {
+		return nil, err
+	}
+	nonce = int(receivedNonce)
+
+	amountMinusGasCost := (amount + config.Configuration.Network.GasCost)
+
+	var waitGroup sync.WaitGroup
+
+	accountsChannel := make(chan accounts.Account, count)
+
+	for i := 0; i < count; i++ {
+		waitGroup.Add(1)
+		go generateAndFundAccount(i, nameTemplate, fromShardID, toShardID, amountMinusGasCost, nonce, accountsChannel, &waitGroup)
+		nonce++
+	}
+
+	waitGroup.Wait()
+	close(accountsChannel)
+
+	for acc := range accountsChannel {
+		accs = append(accs, acc)
+	}
+
+	return accs, nil
+}
+
+func generateAndFundAccount(index int, nameTemplate string, fromShardID uint32, toShardID uint32, amount float64, nonce int, accountsChannel chan<- accounts.Account, waitGroup *sync.WaitGroup) {
+	defer waitGroup.Done()
+
+	accountName := fmt.Sprintf("%s%d", nameTemplate, index)
+	account := accounts.GenerateTypedAccount(accountName)
+
+	PerformFundingTransaction(config.Configuration.Funding.Account.Address, fromShardID, account.Address, toShardID, amount, nonce, config.Configuration.Funding.GasPrice, config.Configuration.Funding.ConfirmationWaitTime, config.Configuration.Funding.Attempts)
+
+	accountsChannel <- account
 }
 
 // FundAccounts - funds a given set of accounts in a given set of shards using a set of source accounts

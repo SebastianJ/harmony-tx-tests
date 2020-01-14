@@ -2,33 +2,35 @@ package testing
 
 // TestCase - represents a test case
 type TestCase struct {
-	Name         string
-	Scenario     string
-	Goal         string
-	Priority     int
-	Result       bool
-	Expected     bool
+	Name         string `yaml:"name"`
+	Scenario     string `yaml:"scenario"`
+	Goal         string `yaml:"goal"`
+	Priority     int    `yaml:"priority"`
+	Active       bool   `yaml:"active"`
+	Result       bool   `yaml:"result"`
+	Expected     bool   `yaml:"expected"`
+	Verbose      bool   `yaml:"verbose"`
+	TestType     string `yaml:"test_type"`
 	Error        error
-	Verbose      bool
-	Parameters   TestCaseParameters
+	Parameters   TestCaseParameters `yaml:"parameters"`
 	Transactions []TestCaseTransaction
 	Function     interface{}
 }
 
 // TestCaseParameters - represents the test case parameters
 type TestCaseParameters struct {
-	SenderCount          int
+	SenderCount          int `yaml:"sender_count"`
 	Senders              []string
-	ReceiverCount        int
+	ReceiverCount        int `yaml:"receiver_count"`
 	Receivers            []string
-	FromShardID          uint32
-	ToShardID            uint32
-	Data                 string
-	Amount               float64
-	GasPrice             int64
-	Nonce                int
-	Count                int
-	ConfirmationWaitTime int
+	FromShardID          uint32  `yaml:"from_shard_id"`
+	ToShardID            uint32  `yaml:"to_shard_id"`
+	Data                 string  `yaml:"data"`
+	Amount               float64 `yaml:"amount"`
+	GasPrice             int64   `yaml:"gas_price"`
+	Nonce                int     `yaml:"nonce"`
+	Count                int     `yaml:"count"`
+	ConfirmationWaitTime int     `yaml:"confirmation_wait_time"`
 }
 
 // TestCaseTransaction - represents an executed test case transaction
