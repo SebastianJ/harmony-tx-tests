@@ -2,7 +2,7 @@ scenario: "Same Beacon Shard"
 name: "SBS5"
 goal: "Insufficient amount"
 priority: 0
-active: true
+execute: true
 expected: false
 verbose: true
 test_type: "standard"

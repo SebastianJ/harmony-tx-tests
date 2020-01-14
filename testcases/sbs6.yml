@@ -2,7 +2,7 @@ scenario: "Same Beacon Shard"
 name: "SBS6"
 goal: "Multiple accounts"
 priority: 0
-active: true
+execute: true
 expected: true
 verbose: true
 test_type: "multiple_senders"

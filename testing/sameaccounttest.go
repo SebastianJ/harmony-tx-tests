@@ -9,7 +9,7 @@ import (
 )
 
 // RunSameAccountTestCase - executes a test case where the sender and receiver address is the same
-func RunSameAccountTestCase(testCase TestCase) {
+func RunSameAccountTestCase(testCase TestCase) TestCase {
 	Title(testCase.Name, "header", testCase.Verbose)
 
 	senderStartingBalance, _ := balances.GetShardBalance(config.Configuration.Funding.Account.Address, testCase.Parameters.FromShardID)
@@ -33,5 +33,5 @@ func RunSameAccountTestCase(testCase TestCase) {
 	// We should end up with a lesser amount compared to the initial amount since we pay a gas fee
 	testCase.Result = (testCaseTx.Success && (senderStartingBalance <= senderEndingBalance))
 
-	Results = append(Results, testCase)
+	return testCase
 }

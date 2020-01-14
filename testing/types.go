@@ -1,12 +1,16 @@
 package testing
 
+import (
+	"github.com/SebastianJ/harmony-tx-tests/accounts"
+)
+
 // TestCase - represents a test case
 type TestCase struct {
 	Name         string `yaml:"name"`
 	Scenario     string `yaml:"scenario"`
 	Goal         string `yaml:"goal"`
 	Priority     int    `yaml:"priority"`
-	Active       bool   `yaml:"active"`
+	Execute      bool   `yaml:"execute"`
 	Result       bool   `yaml:"result"`
 	Expected     bool   `yaml:"expected"`
 	Verbose      bool   `yaml:"verbose"`
@@ -20,9 +24,9 @@ type TestCase struct {
 // TestCaseParameters - represents the test case parameters
 type TestCaseParameters struct {
 	SenderCount          int `yaml:"sender_count"`
-	Senders              []string
+	Senders              []accounts.Account
 	ReceiverCount        int `yaml:"receiver_count"`
-	Receivers            []string
+	Receivers            []accounts.Account
 	FromShardID          uint32  `yaml:"from_shard_id"`
 	ToShardID            uint32  `yaml:"to_shard_id"`
 	Data                 string  `yaml:"data"`

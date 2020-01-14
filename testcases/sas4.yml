@@ -1,6 +1,6 @@
-scenario: "Same Beacon Shard"
-name: "SBS1"
-goal: "Single account"
+scenario: "Same App Shard"
+name: "SAS4"
+goal: "Nano transfer"
 priority: 0
 execute: true
 expected: true
@@ -9,10 +9,10 @@ test_type: "standard"
 parameters:
   sender_count: 1
   receiver_count: 1
-  from_shard_id: 0
-  to_shard_id: 0
+  from_shard_id: 1
+  to_shard_id: 1
   data: ""
-  amount: 1.0
+  amount: 1.00E-09
   nonce: -1
   gas_price: 1
   count: 1

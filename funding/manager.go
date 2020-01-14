@@ -69,15 +69,13 @@ func GenerateAndFundAccounts(count int, nameTemplate string, fromShardID uint32,
 	}
 	nonce = int(receivedNonce)
 
-	amountMinusGasCost := (amount + config.Configuration.Network.GasCost)
-
 	var waitGroup sync.WaitGroup
 
 	accountsChannel := make(chan accounts.Account, count)
 
 	for i := 0; i < count; i++ {
 		waitGroup.Add(1)
-		go generateAndFundAccount(i, nameTemplate, fromShardID, toShardID, amountMinusGasCost, nonce, accountsChannel, &waitGroup)
+		go generateAndFundAccount(i, nameTemplate, fromShardID, toShardID, amount, nonce, accountsChannel, &waitGroup)
 		nonce++
 	}
 
@@ -159,6 +157,7 @@ func AsyncPerformFundingTransaction(fromAddress string, fromShardID uint32, toAd
 // PerformFundingTransaction - performs a funding transaction including automatic retries
 func PerformFundingTransaction(fromAddress string, fromShardID uint32, toAddress string, toShardID uint32, amount float64, nonce int, gasPrice int64, confirmationWaitTime int, attempts int) bool {
 	success := false
+	amount = (amount + config.Configuration.Network.GasCost)
 
 	for ok := true; ok; ok = !success {
 		attempts--

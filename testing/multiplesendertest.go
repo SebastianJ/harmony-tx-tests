@@ -12,27 +12,28 @@ import (
 )
 
 // RunMultipleSenderTestCase - runs a tests where multiple sender wallets are used to send to one respective new wallet
-func RunMultipleSenderTestCase(testCase TestCase) {
+func RunMultipleSenderTestCase(testCase TestCase) TestCase {
 	Title(testCase.Name, "header", testCase.Verbose)
 
 	nameTemplate := fmt.Sprintf("TestCase_%s_Sender_", testCase.Name)
 	senderAccounts, _ := funding.GenerateAndFundAccounts(testCase.Parameters.SenderCount, nameTemplate, testCase.Parameters.FromShardID, testCase.Parameters.ToShardID, testCase.Parameters.Amount)
 	receiverAccount := accounts.GenerateTypedAccount(fmt.Sprintf("TestCase_%s_Receiver", testCase.Name))
 
-	responses := make(chan bool, testCase.Parameters.SenderCount)
+	txs := make(chan TestCaseTransaction, testCase.Parameters.SenderCount)
 	var waitGroup sync.WaitGroup
 
 	for _, senderAccount := range senderAccounts {
 		waitGroup.Add(1)
-		go performSingleAccountTest(testCase, senderAccount, receiverAccount, responses, &waitGroup)
+		go performSingleAccountTest(testCase, senderAccount, receiverAccount, txs, &waitGroup)
 	}
 
 	waitGroup.Wait()
-	close(responses)
+	close(txs)
 
 	successfulCount := 0
-	for response := range responses {
-		if response {
+	for tx := range txs {
+		testCase.Transactions = append(testCase.Transactions, tx)
+		if tx.Success {
 			successfulCount++
 		}
 	}
@@ -48,10 +49,10 @@ func RunMultipleSenderTestCase(testCase TestCase) {
 
 	Title(testCase.Name, "footer", testCase.Verbose)
 
-	Results = append(Results, testCase)
+	return testCase
 }
 
-func performSingleAccountTest(testCase TestCase, senderAccount accounts.Account, receiverAccount accounts.Account, responses chan<- bool, waitGroup *sync.WaitGroup) {
+func performSingleAccountTest(testCase TestCase, senderAccount accounts.Account, receiverAccount accounts.Account, responses chan<- TestCaseTransaction, waitGroup *sync.WaitGroup) {
 	defer waitGroup.Done()
 
 	senderStartingBalance, _ := balances.GetShardBalance(senderAccount.Address, testCase.Parameters.FromShardID)
@@ -64,7 +65,6 @@ func performSingleAccountTest(testCase TestCase, senderAccount accounts.Account,
 
 	rawTx, err := transactions.SendTransaction(senderAccount.Address, testCase.Parameters.FromShardID, receiverAccount.Address, testCase.Parameters.ToShardID, testCase.Parameters.Amount, -1, testCase.Parameters.GasPrice, testCase.Parameters.Data, testCase.Parameters.ConfirmationWaitTime)
 	testCaseTx := ConvertToTestCaseTransaction(senderAccount.Address, receiverAccount.Address, rawTx, testCase.Parameters, err)
-	testCase.Transactions = append(testCase.Transactions, testCaseTx)
 
 	Log(testCase.Name, fmt.Sprintf("Sent %f token(s) from %s to %s - transaction hash: %s, tx successful: %t", testCase.Parameters.Amount, config.Configuration.Funding.Account.Address, receiverAccount.Address, testCaseTx.TransactionHash, testCaseTx.Success), testCase.Verbose)
 
@@ -75,5 +75,5 @@ func performSingleAccountTest(testCase TestCase, senderAccount accounts.Account,
 
 	Teardown(senderAccount.Name, senderAccount.Address, testCase.Parameters.FromShardID, config.Configuration.Funding.Account.Address, testCase.Parameters.ToShardID, testCase.Parameters.Amount, testCase.Parameters.GasPrice, 0)
 
-	responses <- testCaseTx.Success
+	responses <- testCaseTx
 }

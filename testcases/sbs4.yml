@@ -2,7 +2,7 @@ scenario: "Same Beacon Shard"
 name: "SBS4"
 goal: "Nano transfer"
 priority: 0
-active: true
+execute: true
 expected: true
 verbose: true
 test_type: "standard"

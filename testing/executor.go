@@ -27,22 +27,38 @@ func ExecuteTestCases() error {
 
 func execute() {
 	for _, testCase := range TestCases {
-		if testCase.Active {
+		if testCase.Execute {
+			executed := false
 
 			switch testCase.TestType {
 			case "standard":
-				RunStandardTestCase(testCase)
+				testCase = RunStandardTestCase(testCase)
+				executed = true
 			case "same_account":
-				RunSameAccountTestCase(testCase)
+				testCase = RunSameAccountTestCase(testCase)
+				executed = true
 			case "multiple_senders":
-				RunMultipleSenderTestCase(testCase)
+				testCase = RunMultipleSenderTestCase(testCase)
+				executed = true
 			default:
 				fmt.Println(fmt.Sprintf("Please specify a valid test type for your test case %s", testCase.Name))
 			}
 
+			if executed {
+				Results = append(Results, testCase)
+			}
+
 			//registryItem.Function.(func(TestCase))(registryItem.TestCase)
 		} else {
-			fmt.Println(fmt.Sprintf("\nTest case %s has the active attribute set to false - make sure to set it to true if you want to run this test case\n", testCase.Name))
+			fmt.Println(fmt.Sprintf("\nTest case %s has the execute attribute set to false - make sure to set it to true if you want to execute this test case\n", testCase.Name))
+		}
+	}
+}
+
+func fund() {
+	for _, testCase := range TestCases {
+		if testCase.Execute {
+
 		}
 	}
 }

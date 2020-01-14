@@ -1,8 +1,8 @@
-scenario: "Same Beacon Shard"
-name: "SBS1"
-goal: "Single account"
+scenario: "Same App Shard"
+name: "SAS8"
+goal: "One byte tx data"
 priority: 0
-execute: true
+execute: false
 expected: true
 verbose: true
 test_type: "standard"
@@ -11,7 +11,7 @@ parameters:
   receiver_count: 1
   from_shard_id: 0
   to_shard_id: 0
-  data: ""
+  data: "a"
   amount: 1.0
   nonce: -1
   gas_price: 1
