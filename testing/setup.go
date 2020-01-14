@@ -17,41 +17,6 @@ var (
 func init() {
 	testCases := loadTestCases()
 	TestCases = testCases
-
-	/*Registry = append(Registry, RegistryItem{
-		TestCase: Sbs1TestCase,
-		Function: RunSbs1TestCase,
-	})
-
-	Registry = append(Registry, RegistryItem{
-		TestCase: Sbs2TestCase,
-		Function: RunSbs2TestCase,
-	})
-
-	Registry = append(Registry, RegistryItem{
-		TestCase: Sbs3TestCase,
-		Function: RunSbs3TestCase,
-	})
-
-	Registry = append(Registry, RegistryItem{
-		TestCase: Sbs4TestCase,
-		Function: RunSbs4TestCase,
-	})
-
-	Registry = append(Registry, RegistryItem{
-		TestCase: Sbs5TestCase,
-		Function: RunSbs5TestCase,
-	})
-
-	Registry = append(Registry, RegistryItem{
-		TestCase: Sbs6TestCase,
-		Function: RunSbs6TestCase,
-	})
-
-	Registry = append(Registry, RegistryItem{
-		TestCase: Sbs8TestCase,
-		Function: RunSbs8TestCase,
-	})*/
 }
 
 func loadTestCases() (testCases []TestCase) {

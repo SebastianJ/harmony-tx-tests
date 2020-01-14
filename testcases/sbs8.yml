@@ -2,7 +2,7 @@ scenario: "Same Beacon Shard"
 name: "SBS8"
 goal: "One byte tx data"
 priority: 0
-execute: false
+execute: true
 expected: true
 verbose: true
 test_type: "standard"

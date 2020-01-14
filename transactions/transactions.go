@@ -1,10 +1,12 @@
 package transactions
 
 import (
+	"encoding/base64"
+
+	"github.com/SebastianJ/harmony-tx-tests/config"
 	sdkNonces "github.com/SebastianJ/harmony-sdk/nonces"
 	sdkShards "github.com/SebastianJ/harmony-sdk/shards"
 	sdkTxs "github.com/SebastianJ/harmony-sdk/transactions"
-	"github.com/SebastianJ/harmony-tx-tests/config"
 	"github.com/harmony-one/go-sdk/pkg/common"
 	"github.com/harmony-one/go-sdk/pkg/rpc"
 	"github.com/harmony-one/go-sdk/pkg/store"
@@ -76,6 +78,10 @@ func SendTransaction(fromAddress string, fromShardID uint32, toAddress string, t
 		}
 	} else {
 		currentNonce = uint64(nonce)
+	}
+
+	if txData != "" {
+		txData = base64.StdEncoding.EncodeToString([]byte(txData))
 	}
 
 	keystore, account, err := store.UnlockedKeystore(fromAddress, config.Configuration.Account.Passphrase)
