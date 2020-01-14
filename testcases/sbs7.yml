@@ -1,0 +1,19 @@
+scenario: "Same Beacon Shard"
+name: "SBS7"
+goal: "Multiple accounts"
+priority: 0
+execute: true
+expected: true
+verbose: true
+test_type: "multiple_receivers_invalid_nonce"
+parameters:
+  sender_count: 1
+  receiver_count: 10
+  from_shard_id: 0
+  to_shard_id: 0
+  data: ""
+  amount: 1.0
+  nonce: -1
+  gas_price: 1
+  count: 1
+  confirmation_wait_time: 16

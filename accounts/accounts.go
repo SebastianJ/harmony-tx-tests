@@ -7,6 +7,7 @@ import (
 	"path"
 	"path/filepath"
 	"regexp"
+	"sync"
 
 	"github.com/SebastianJ/harmony-tx-tests/balances"
 	"github.com/SebastianJ/harmony-tx-tests/config"
@@ -157,6 +158,48 @@ func GenerateAccountAndReturnAddress(name string) (string, error) {
 	address := FindAccountAddressByName(name)
 
 	return address, nil
+}
+
+// GenerateMultipleTypedAccounts - generates multiple typed accounts
+func GenerateMultipleTypedAccounts(nameTemplate string, count int) (accs []Account) {
+	for i := 0; i < count; i++ {
+		name := fmt.Sprintf("%s%d", nameTemplate, i)
+		acc := GenerateTypedAccount(name)
+
+		if acc.Address != "" {
+			accs = append(accs, acc)
+		}
+	}
+
+	return accs
+}
+
+// AsyncGenerateMultipleTypedAccounts - asynchronously generates multiple typed accounts
+func AsyncGenerateMultipleTypedAccounts(nameTemplate string, count int) (accs []Account) {
+	accountsChannel := make(chan Account, count)
+	var waitGroup sync.WaitGroup
+
+	for i := 0; i < count; i++ {
+		name := fmt.Sprintf("%s%d", nameTemplate, i)
+		waitGroup.Add(1)
+		go func(name string, accountsChannel chan<- Account, waitGroup *sync.WaitGroup) {
+			defer waitGroup.Done()
+			acc := GenerateTypedAccount(name)
+
+			if acc.Address != "" {
+				accountsChannel <- acc
+			}
+		}(name, accountsChannel, &waitGroup)
+	}
+
+	waitGroup.Wait()
+	close(accountsChannel)
+
+	for acc := range accountsChannel {
+		accs = append(accs, acc)
+	}
+
+	return accs
 }
 
 // GenerateTypedAccount - generates a new account and returns it as an Account type

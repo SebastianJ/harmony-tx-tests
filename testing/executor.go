@@ -40,6 +40,9 @@ func execute() {
 			case "multiple_senders":
 				testCase = RunMultipleSenderTestCase(testCase)
 				executed = true
+			case "multiple_receivers_invalid_nonce":
+				testCase = RunMultipleReceiverInvalidNonceTestCase(testCase)
+				executed = true
 			default:
 				fmt.Println(fmt.Sprintf("Please specify a valid test type for your test case %s", testCase.Name))
 			}

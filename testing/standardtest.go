@@ -18,9 +18,12 @@ func RunStandardTestCase(testCase TestCase) TestCase {
 	Log(testCase.Name, fmt.Sprintf("Generating a new sender account: %s", senderAccountName), testCase.Verbose)
 	senderAccount := accounts.GenerateTypedAccount(senderAccountName)
 
+	fundingAccountBalance, _ := balances.GetShardBalance(config.Configuration.Funding.Account.Address, testCase.Parameters.FromShardID)
 	fundingAmount := 1.0
-	if testCase.Expected && testCase.Parameters.Amount > fundingAmount {
-		fundingAmount = testCase.Parameters.Amount
+	if (float64(testCase.Parameters.ReceiverCount) * testCase.Parameters.Amount) <= fundingAccountBalance {
+		fundingAmount = (float64(testCase.Parameters.ReceiverCount) * testCase.Parameters.Amount)
+	} else {
+		fundingAmount = (float64(testCase.Parameters.ReceiverCount) * fundingAmount)
 	}
 
 	Log(testCase.Name, fmt.Sprintf("Funding sender account: %s, address: %s", senderAccount.Name, senderAccount.Address), testCase.Verbose)

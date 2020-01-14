@@ -24,7 +24,7 @@ func RunMultipleSenderTestCase(testCase TestCase) TestCase {
 
 	for _, senderAccount := range senderAccounts {
 		waitGroup.Add(1)
-		go performSingleAccountTest(testCase, senderAccount, receiverAccount, txs, &waitGroup)
+		go performSingleSenderAccountTest(testCase, senderAccount, receiverAccount, txs, &waitGroup)
 	}
 
 	waitGroup.Wait()
@@ -52,7 +52,7 @@ func RunMultipleSenderTestCase(testCase TestCase) TestCase {
 	return testCase
 }
 
-func performSingleAccountTest(testCase TestCase, senderAccount accounts.Account, receiverAccount accounts.Account, responses chan<- TestCaseTransaction, waitGroup *sync.WaitGroup) {
+func performSingleSenderAccountTest(testCase TestCase, senderAccount accounts.Account, receiverAccount accounts.Account, responses chan<- TestCaseTransaction, waitGroup *sync.WaitGroup) {
 	defer waitGroup.Done()
 
 	senderStartingBalance, _ := balances.GetShardBalance(senderAccount.Address, testCase.Parameters.FromShardID)
