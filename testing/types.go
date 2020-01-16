@@ -30,6 +30,7 @@ type TestCaseParameters struct {
 	FromShardID          uint32  `yaml:"from_shard_id"`
 	ToShardID            uint32  `yaml:"to_shard_id"`
 	Data                 string  `yaml:"data"`
+	DataSize             int     `yaml:"data_size,omitempty"`
 	Amount               float64 `yaml:"amount"`
 	GasPrice             int64   `yaml:"gas_price"`
 	Nonce                int     `yaml:"nonce"`

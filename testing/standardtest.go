@@ -26,6 +26,13 @@ func RunStandardTestCase(testCase TestCase) TestCase {
 		fundingAmount = (float64(testCase.Parameters.ReceiverCount) * fundingAmount)
 	}
 
+	if testCase.Parameters.Data == "" && testCase.Parameters.DataSize > 0 {
+		testCase.Parameters.Data = transactions.GenerateTxData(testCase.Parameters.DataSize)
+	}
+
+	fmt.Println(fmt.Sprintf("Tx data is now %s", testCase.Parameters.Data))
+	fmt.Println(fmt.Sprintf("Tx data size is %d", testCase.Parameters.DataSize))
+
 	Log(testCase.Name, fmt.Sprintf("Funding sender account: %s, address: %s", senderAccount.Name, senderAccount.Address), testCase.Verbose)
 	funding.PerformFundingTransaction(config.Configuration.Funding.Account.Address, testCase.Parameters.FromShardID, senderAccount.Address, testCase.Parameters.ToShardID, fundingAmount, -1, config.Configuration.Funding.GasPrice, config.Configuration.Funding.ConfirmationWaitTime, config.Configuration.Funding.Attempts)
 

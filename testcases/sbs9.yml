@@ -1,0 +1,20 @@
+scenario: "Same Beacon Shard"
+name: "SBS9"
+goal: "Huge tx data"
+priority: 0
+execute: false
+expected: true
+verbose: true
+test_type: "standard"
+parameters:
+  sender_count: 1
+  receiver_count: 1
+  from_shard_id: 0
+  to_shard_id: 0
+  data: ""
+  data_size: 1e10
+  amount: 1.0
+  nonce: -1
+  gas_price: 1
+  count: 1
+  confirmation_wait_time: 16

@@ -1,12 +1,13 @@
 package transactions
 
 import (
+	"bytes"
 	"encoding/base64"
 
-	"github.com/SebastianJ/harmony-tx-tests/config"
 	sdkNonces "github.com/SebastianJ/harmony-sdk/nonces"
 	sdkShards "github.com/SebastianJ/harmony-sdk/shards"
 	sdkTxs "github.com/SebastianJ/harmony-sdk/transactions"
+	"github.com/SebastianJ/harmony-tx-tests/config"
 	"github.com/harmony-one/go-sdk/pkg/common"
 	"github.com/harmony-one/go-sdk/pkg/rpc"
 	"github.com/harmony-one/go-sdk/pkg/store"
@@ -21,6 +22,17 @@ func IsTransactionSuccessful(txResponse map[string]interface{}) (success bool) {
 	}
 
 	return success
+}
+
+// GenerateTxData - generates tx data based on a given byte size
+func GenerateTxData(byteSize int) string {
+	buffer := new(bytes.Buffer)
+
+	for i := 0; i < byteSize; i++ {
+		buffer.Write([]byte("a"))
+	}
+
+	return buffer.String()
 }
 
 // SendSameShardTransaction - send a transaction using the same shard for both the receiver and the sender
