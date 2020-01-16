@@ -37,7 +37,7 @@ func LoadSourceAccounts() (accs []string, err error) {
 		return nil, err
 	}
 
-	fmt.Println(fmt.Sprintf("Found a total of %d keys", len(accs)))
+	fmt.Println(fmt.Sprintf("Found a total of %d source accounts", len(accs)))
 
 	for path, address := range accountMapping {
 		fmt.Println(fmt.Sprintf("Keyfile path: %s, address: %s", path, address))
@@ -239,15 +239,21 @@ func IdentifyKeys() (map[string]string, error) {
 	}
 
 	for _, file := range files {
-		keyData, err := utils.ReadFileToString(file)
+		filePath, err := filepath.Abs(file)
+
+		if err != nil {
+			return nil, err
+		}
+
+		keyData, err := utils.ReadFileToString(filePath)
 
 		if err == nil {
-			keyDetails, err := parseKeyJson(keyData)
+			keyDetails, err := parseKeyJSON(keyData)
 
 			if err == nil {
 				if address, ok := keyDetails["address"]; ok {
 					if address.(string) != "" {
-						keys[file] = address.(string)
+						keys[filePath] = address.(string)
 					}
 				}
 			}
@@ -257,7 +263,7 @@ func IdentifyKeys() (map[string]string, error) {
 	return keys, nil
 }
 
-func parseKeyJson(data string) (map[string]interface{}, error) {
+func parseKeyJSON(data string) (map[string]interface{}, error) {
 	var rawData interface{}
 	err := json.Unmarshal([]byte(data), &rawData)
 
