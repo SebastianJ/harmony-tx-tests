@@ -3,6 +3,7 @@ package transactions
 import (
 	"bytes"
 	"encoding/base64"
+	"fmt"
 
 	sdkNonces "github.com/SebastianJ/harmony-sdk/nonces"
 	sdkShards "github.com/SebastianJ/harmony-sdk/shards"
@@ -66,6 +67,16 @@ func CurrentNonce(address string, networkHandler *rpc.HTTPMessenger) (uint64, er
 func SendTransaction(fromAddress string, fromShardID uint32, toAddress string, toShardID uint32, amount float64, nonce int, gasPrice int64, txData string, confirmationWaitTime int) (map[string]interface{}, error) {
 	node := config.GenerateNodeAddress(config.Configuration.Network.Name, fromShardID)
 
+	decAmount, err := common.NewDecFromString(fmt.Sprintf("%f", amount))
+	if err != nil {
+		return nil, err
+	}
+
+	decGasPrice, err := common.NewDecFromString(fmt.Sprintf("%d", gasPrice))
+	if err != nil {
+		return nil, err
+	}
+
 	networkHandler, err := NetworkHandler(fromShardID)
 	if err != nil {
 		return nil, err
@@ -101,7 +112,7 @@ func SendTransaction(fromAddress string, fromShardID uint32, toAddress string, t
 		return nil, err
 	}
 
-	txResult, err := sdkTxs.SendTransaction(keystore, account, networkHandler, chain, fromAddress, fromShardID, toAddress, toShardID, amount, gasPrice, currentNonce, txData, config.Configuration.Account.Passphrase, node, confirmationWaitTime)
+	txResult, err := sdkTxs.SendTransaction(keystore, account, networkHandler, chain, fromAddress, fromShardID, toAddress, toShardID, decAmount, decGasPrice, currentNonce, txData, config.Configuration.Account.Passphrase, node, confirmationWaitTime)
 
 	if err != nil {
 		return nil, err

@@ -8,7 +8,10 @@ import (
 
 // Teardown - return any sent tokens (minus a gas cost) and remove the account from the keystore
 func Teardown(accountName string, fromAddress string, fromShardID uint32, toAddress string, toShardID uint32, amount float64, gasPrice int64, confirmationWaitTime int) {
-	returnAmount := (amount - config.Configuration.Network.GasCost)
-	transactions.SendTransaction(fromAddress, fromShardID, toAddress, toShardID, returnAmount, -1, gasPrice, "", confirmationWaitTime)
+	if amount > 0.0 {
+		amount = (amount - config.Configuration.Network.GasCost)
+	}
+
+	transactions.SendTransaction(fromAddress, fromShardID, toAddress, toShardID, amount, -1, gasPrice, "", confirmationWaitTime)
 	accounts.RemoveAccount(accountName)
 }
