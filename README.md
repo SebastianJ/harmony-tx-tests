@@ -1,11 +1,12 @@
-# harmony-tf
-Harmony tx tests is a transaction test suite tool.
+# harmony-tx-tests
+Harmony tx tests tests a bunch of different transaction test cases using the Harmony Testing Framework.
 
-## Features
+## Implemented test cases
 
-* Automatically importing keys placed in keys/ into the keystore
-* Generating temporary receiver accounts
-* Sending back any eventual test funds to the originator and subsequently removing the account from the keystore
-* Defining test cases and evaluating if a given test case's result matches the expected test result.
-* Sending transactions without relying on hmy or any CLI - i.e. directly communicating with the API:s
+### Token Swap
+Sas1-8
+Sbs1-8
+
+### Staking
+TBD
 
