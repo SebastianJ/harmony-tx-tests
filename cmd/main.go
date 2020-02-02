@@ -84,6 +84,14 @@ func startTests(context *cli.Context) error {
 		return err
 	}
 
+	testcases, err := testing.LoadTestCases(filepath.Join(config.Configuration.BasePath, "testcases", "*.yml"))
+
+	if err != nil {
+		return err
+	}
+
+	testing.TestCases = testcases
+
 	if err := testing.ExecuteTestCases(); err != nil {
 		return err
 	}
