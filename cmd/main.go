@@ -3,10 +3,11 @@ package main
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"runtime"
 
-	"github.com/SebastianJ/harmony-tx-tests/config"
-	"github.com/SebastianJ/harmony-tx-tests/testing"
+	"github.com/SebastianJ/harmony-tf/config"
+	"github.com/SebastianJ/harmony-tf/testing"
 
 	"github.com/urfave/cli"
 )
@@ -32,9 +33,9 @@ func main() {
 		},
 
 		cli.StringFlag{
-			Name:  "config",
-			Usage: "The path to the config containing the test suite settings",
-			Value: "./config.yml",
+			Name:  "path",
+			Usage: "The root path for the config file + the testcases",
+			Value: "./",
 		},
 
 		cli.StringFlag{
@@ -74,7 +75,12 @@ func main() {
 }
 
 func startTests(context *cli.Context) error {
-	if err := config.Configure(context); err != nil {
+	basePath, err := filepath.Abs(context.GlobalString("path"))
+	if err != nil {
+		return err
+	}
+
+	if err := config.Configure(basePath, context); err != nil {
 		return err
 	}
 

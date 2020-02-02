@@ -1,4 +1,4 @@
-# harmony-tx-tests
+# harmony-tf
 Harmony tx tests is a transaction test suite tool.
 
 ## Features
