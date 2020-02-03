@@ -5,7 +5,7 @@ priority: 0
 execute: true
 expected: true
 verbose: true
-test_type: "same_account"
+test_type: "standard"
 parameters:
   sender_count: 1
   receiver_count: 1

@@ -12,7 +12,7 @@ parameters:
   from_shard_id: 1
   to_shard_id: 1
   data: ""
-  amount: 1.00E-18
+  amount: 0.000000000000000001
   nonce: -1 # -1 means that the nonce will automatically be identified
   gas_limit: -1 # -1 means that the gas limit will automatically be calculated
   gas_price: 1

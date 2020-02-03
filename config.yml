@@ -4,8 +4,9 @@ network:
   gas_cost: 0.1
 
 accounts:
-  keys: "./keys"
   passphrase: ""
+  remove_empty: true
+  use_all_in_keystore: false
   
 funding:
   account:
@@ -14,5 +15,5 @@ funding:
   minimum_funds: 10.0
   confirmation_wait_time: 16
   attempts: 3
-  gas_limit: 21_000
+  gas_limit: 53_000
   gas_price: 1

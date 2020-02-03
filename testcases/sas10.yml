@@ -1,6 +1,6 @@
 scenario: "Same App Shard"
-name: "SAS4"
-goal: "Nano transfer"
+name: "SAS10"
+goal: "Maximum size of tx data"
 priority: 0
 execute: true
 expected: true
@@ -12,9 +12,10 @@ parameters:
   from_shard_id: 1
   to_shard_id: 1
   data: ""
-  amount: 0.000000001
+  data_size: 24489
+  amount: 1.0
   nonce: -1 # -1 means that the nonce will automatically be identified
-  gas_limit: -1 # -1 means that the gas limit will automatically be calculated
+  gas_limit: 5_000_000
   gas_price: 1
   count: 1
   confirmation_wait_time: 16
