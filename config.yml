@@ -1,7 +1,7 @@
 network:
   name: "localnet"
   node: "http://localhost:9500"
-  gas_cost: 0.0001
+  gas_cost: 0.1
 
 accounts:
   keys: "./keys"
@@ -13,5 +13,6 @@ funding:
     address: ""
   minimum_funds: 10.0
   confirmation_wait_time: 16
-  attempts: 10
+  attempts: 3
+  gas_limit: 21_000
   gas_price: 1

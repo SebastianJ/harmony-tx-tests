@@ -1,20 +1,21 @@
 scenario: "Same Beacon Shard"
-name: "SBS7"
-goal: "Multiple accounts"
+name: "SBS10"
+goal: "Maximum size of tx data"
 priority: 0
 execute: true
-expected: false
+expected: true
 verbose: true
-test_type: "multiple_receivers_invalid_nonce"
+test_type: "same_account"
 parameters:
   sender_count: 1
-  receiver_count: 10
+  receiver_count: 1
   from_shard_id: 0
   to_shard_id: 0
   data: ""
+  data_size: 24489
   amount: 1.0
   nonce: -1 # -1 means that the nonce will automatically be identified
-  gas_limit: -1 # -1 means that the gas limit will automatically be calculated
+  gas_limit: 5_000_000
   gas_price: 1
   count: 1
   confirmation_wait_time: 16

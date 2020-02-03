@@ -1,16 +1,16 @@
-scenario: "Same Beacon Shard"
-name: "SBS7"
-goal: "Multiple accounts"
-priority: 0
+scenario: "Cross Beacon Shard"
+name: "CBS1"
+goal: "Same account"
+priority: 1
 execute: true
-expected: false
+expected: true
 verbose: true
-test_type: "multiple_receivers_invalid_nonce"
+test_type: "same_account"
 parameters:
   sender_count: 1
-  receiver_count: 10
+  receiver_count: 1
   from_shard_id: 0
-  to_shard_id: 0
+  to_shard_id: 1
   data: ""
   amount: 1.0
   nonce: -1 # -1 means that the nonce will automatically be identified
