@@ -1,12 +1,9 @@
 # harmony-tx-tests
-Harmony tx tests tests a bunch of different transaction test cases using the Harmony Testing Framework.
+Harmony-tx-tests executes a set of test cases for testing that transactions work properly on Harmony's blockchain.
 
-## Implemented test cases
+It uses the harmony-tf testing framework under the hood.
 
-### Token Swap
-Sas1-8
-Sbs1-8
+## How to implement a test case
+Test cases are defined as YAML files and placed in testcases/ - see this folder for existing test cases and how to impelement test cases.
 
-### Staking
-TBD
 
