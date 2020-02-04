@@ -1,0 +1,21 @@
+scenario: "Cross App Shard"
+name: "CAS14"
+goal: "Same Account Maximum Size Of Tx Data (Shard 2 -> 1)"
+priority: 0
+execute: true
+expected: true
+verbose: true
+test_type: "same_account"
+parameters:
+  sender_count: 1
+  receiver_count: 1
+  from_shard_id: 2
+  to_shard_id: 1
+  data: ""
+  data_size: 24489
+  amount: 1.0
+  nonce: -1 # -1 means that the nonce will automatically be identified
+  gas_limit: 5_000_000
+  gas_price: 1
+  count: 1
+  confirmation_wait_time: 64
