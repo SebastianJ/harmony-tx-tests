@@ -18,5 +18,5 @@ parameters:
   count: 1
   confirmation_wait_time: 64
   gas:
-    limit: 5_000_000
+    limit: 5000000
     price: 1
