@@ -1,6 +1,6 @@
 scenario: "Cross Beacon Shard"
-name: "CBS1"
-goal: "Same account (Shard 0 -> 1)"
+name: "CBS8"
+goal: "Same account (Shard 1 -> 0)"
 priority: 1
 execute: true
 expected: true
@@ -9,8 +9,8 @@ test_type: "same_account"
 parameters:
   sender_count: 1
   receiver_count: 1
-  from_shard_id: 0
-  to_shard_id: 1
+  from_shard_id: 1
+  to_shard_id: 0
   data: ""
   amount: 1.0
   nonce: -1 # -1 means that the nonce will automatically be identified

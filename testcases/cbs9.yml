@@ -1,7 +1,7 @@
 scenario: "Cross Beacon Shard"
-name: "CBS1"
-goal: "Same account (Shard 0 -> 1)"
-priority: 1
+name: "CBS9"
+goal: "Same Account Atto Transfer (Shard 1 -> 0)"
+priority: 0
 execute: true
 expected: true
 verbose: true
@@ -9,10 +9,10 @@ test_type: "same_account"
 parameters:
   sender_count: 1
   receiver_count: 1
-  from_shard_id: 0
-  to_shard_id: 1
+  from_shard_id: 1
+  to_shard_id: 0
   data: ""
-  amount: 1.0
+  amount: 0.000000000000000001
   nonce: -1 # -1 means that the nonce will automatically be identified
   gas_limit: -1 # -1 means that the gas limit will automatically be calculated
   gas_price: 1

@@ -1,16 +1,15 @@
 network:
   name: "localnet"
-  node: "http://localhost:9500"
   gas_cost: 0.1
 
-accounts:
+account:
   passphrase: ""
   remove_empty: true
   use_all_in_keystore: false
   
 funding:
   account:
-    name: "TestSuiteFundingAccount"
+    name: "TestSuiteFundingAccount" # This name will be prefixed with the current network name
     address: ""
   minimum_funds: 10.0
   confirmation_wait_time: 16

@@ -7,6 +7,7 @@ import (
 	"runtime"
 
 	"github.com/SebastianJ/harmony-tf/config"
+	"github.com/SebastianJ/harmony-tf/execution"
 	"github.com/SebastianJ/harmony-tf/testing"
 
 	"github.com/urfave/cli"
@@ -85,14 +86,13 @@ func startTests(context *cli.Context) error {
 	}
 
 	testcases, err := testing.LoadTestCases(filepath.Join(config.Configuration.BasePath, "testcases", "*.yml"))
-
 	if err != nil {
 		return err
 	}
 
 	testing.TestCases = testcases
 
-	if err := testing.ExecuteTestCases(); err != nil {
+	if err := execution.ExecuteTestCases(); err != nil {
 		return err
 	}
 

@@ -1,7 +1,7 @@
 scenario: "Cross Beacon Shard"
-name: "CBS1"
-goal: "Same account (Shard 0 -> 1)"
-priority: 1
+name: "CBS14"
+goal: "Same Account Maximum Size Of Tx Data (Shard 1 -> 0)"
+priority: 0
 execute: true
 expected: true
 verbose: true
@@ -9,12 +9,13 @@ test_type: "same_account"
 parameters:
   sender_count: 1
   receiver_count: 1
-  from_shard_id: 0
-  to_shard_id: 1
+  from_shard_id: 1
+  to_shard_id: 0
   data: ""
+  data_size: 24489
   amount: 1.0
   nonce: -1 # -1 means that the nonce will automatically be identified
-  gas_limit: -1 # -1 means that the gas limit will automatically be calculated
+  gas_limit: 5_000_000
   gas_price: 1
   count: 1
-  confirmation_wait_time: 24
+  confirmation_wait_time: 64
