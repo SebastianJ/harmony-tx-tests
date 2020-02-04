@@ -1,0 +1,21 @@
+category: "Cross App Shard"
+name: "CAS3"
+goal: "Same Account Nano Transfer (Shard 1 -> 2)"
+priority: 0
+execute: true
+expected: true
+verbose: true
+scenario: "transactions/same_account"
+parameters:
+  sender_count: 1
+  receiver_count: 1
+  from_shard_id: 1
+  to_shard_id: 2
+  data: ""
+  amount: 0.000000001
+  nonce: -1 # -1 means that the nonce will automatically be identified
+  count: 1
+  confirmation_wait_time: 24
+  gas:
+    limit: -1 # -1 means that the gas limit will automatically get calculated
+    price: 1
