@@ -1,0 +1,21 @@
+category: "Same Beacon Shard"
+name: "SBS7"
+goal: "Multiple accounts"
+priority: 0
+execute: true
+expected: false
+verbose: true
+scenario: "transactions/multiple_receivers_invalid_nonce"
+parameters:
+  sender_count: 1
+  receiver_count: 10
+  from_shard_id: 0
+  to_shard_id: 0
+  data: ""
+  amount: 1.0
+  nonce: -1 # -1 means that the nonce will automatically be identified
+  count: 1
+  confirmation_wait_time: 16
+  gas:
+    limit: -1 # -1 means that the gas limit will automatically get calculated
+    price: 1
