@@ -1,0 +1,21 @@
+category: "Cross Beacon Shard"
+name: "CBS26"
+goal: "Multiple Account One Byte Tx Data (Shard 1 -> 0)"
+priority: 0
+execute: true
+expected: true
+verbose: true
+scenario: "transactions/multiple_senders"
+parameters:
+  sender_count: 10
+  receiver_count: 1
+  from_shard_id: 1
+  to_shard_id: 0
+  data: "a"
+  amount: 1
+  nonce: -1 # -1 means that the nonce will automatically get identified
+  count: 1
+  confirmation_wait_time: 32
+  gas:
+    limit: -1 # -1 means that the gas limit will automatically get calculated
+    price: 1
