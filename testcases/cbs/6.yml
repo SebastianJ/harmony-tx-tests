@@ -11,7 +11,7 @@ parameters:
   receiver_count: 1
   from_shard_id: 0
   to_shard_id: 1
-  data: ""
+  data: "a"
   data_size: 1e6 # There's absolutely no reason to use the 1e10 tx data size as suggested in the test spec - txs will fail way before a tx data size of 10,000,000,000 bytes
   amount: 1.0
   nonce: -1 # -1 means that the nonce will automatically be identified

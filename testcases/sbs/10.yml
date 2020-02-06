@@ -11,8 +11,8 @@ parameters:
   receiver_count: 1
   from_shard_id: 0
   to_shard_id: 0
-  data: ""
-  data_size: 24489
+  data: "a"
+  data_size: 24486
   amount: 1.0
   nonce: -1 # -1 means that the nonce will automatically be identified
   count: 1

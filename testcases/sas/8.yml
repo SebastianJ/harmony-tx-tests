@@ -17,5 +17,5 @@ parameters:
   count: 1
   confirmation_wait_time: 16
   gas:
-    limit: -1 # -1 means that the gas limit will automatically get calculated
+    limit: 5000000 # -1 means that the gas limit will automatically get calculated
     price: 1
