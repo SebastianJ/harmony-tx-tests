@@ -22,6 +22,8 @@ github.com/SebastianJ/harmony-tf v0.0.0-20200207112901-e2f1e2504009 h1:o6fUez6II
 github.com/SebastianJ/harmony-tf v0.0.0-20200207112901-e2f1e2504009/go.mod h1:102An61REWr3m1VR4C53iIKePdul6PgX956dawUOBvY=
 github.com/SebastianJ/harmony-tf v0.0.0-20200207114120-6b3e20ee5041 h1:1CfXDvLJ0mz7G5repv3m6uB4F2RHEROB2Dr9QS3aNXI=
 github.com/SebastianJ/harmony-tf v0.0.0-20200207114120-6b3e20ee5041/go.mod h1:102An61REWr3m1VR4C53iIKePdul6PgX956dawUOBvY=
+github.com/SebastianJ/harmony-tf v0.0.0-20200207120123-c18c32d8e9f7 h1:hn5ggp/9M+9swfirWjUuQs/2ETDl1jSnTW3rnb52Wyo=
+github.com/SebastianJ/harmony-tf v0.0.0-20200207120123-c18c32d8e9f7/go.mod h1:102An61REWr3m1VR4C53iIKePdul6PgX956dawUOBvY=
 github.com/Shopify/sarama v1.23.1/go.mod h1:XLH1GYJnLVE0XCr6KdJGVJRTwY30moWNJ4sERjXX6fs=
 github.com/Shopify/toxiproxy v2.1.4+incompatible/go.mod h1:OXgGpZ6Cli1/URJOF1DMxUHB2q5Ap20/P/eIdh4G0pI=
 github.com/StackExchange/wmi v0.0.0-20180116203802-5d049714c4a6/go.mod h1:3eOhrUMpNV+6aFIbp5/iudMxNCF27Vw2OZgy4xEx0Fg=
