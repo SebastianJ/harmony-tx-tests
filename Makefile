@@ -25,7 +25,7 @@ static:
 	source $(shell go env GOPATH)/src/github.com/harmony-one/harmony/scripts/setup_bls_build_flags.sh && $(env) go build -o $(dist) -ldflags="$(ldflags) -w -extldflags \"-static\"" cmd/main.go
 
 package-testcases:
-	tar -czvf testcases.tar.gz testcases && mv testcases.tar.gz dist
+	mkdir -p dist && tar -czvf testcases.tar.gz testcases && mv testcases.tar.gz dist/
 
 debug:
 	source $(shell go env GOPATH)/src/github.com/harmony-one/harmony/scripts/setup_bls_build_flags.sh && $(env) go build $(flags) -o $(dist) -ldflags="$(ldflags)" cmd/main.go
