@@ -1,5 +1,5 @@
 network:
-  name: "localnet"
+  name: "testnet"
   cross_shard_tx_wait_time: 16 # The time to wait for account balances to properly updated when performing cross shard transfers
   gas:
     cost: 0.1 # Estimated gas cost that will be used for various transaction and funding calculations etc.
