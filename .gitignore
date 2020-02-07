@@ -16,6 +16,7 @@
 
 .DS_Store
 
+dist/
 keys/
 cmd/main
-testcasesdump
+testcases_dump
