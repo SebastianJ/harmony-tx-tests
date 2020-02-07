@@ -12,12 +12,12 @@ bash <(curl -s -S -L https://raw.githubusercontent.com/SebastianJ/harmony-tx-tes
 
 ## Usage
 If you want to use private keys:
-e.g. for testnet: `nano keys/testnet/private_keys.txt` - and save your list of private keys to the file
+e.g. for testnet: `nano keys/testnet/private_keys.txt` - and save your list of private keys to this file
 
 If you want to use keystore files:
 e.g. for testnet: `cp keystore-folder keys/testnet`
 
-Harmony TF will automatically identify keyfiles no matter what you call the folders or what the files are called.
+Harmony TF will automatically identify keyfiles no matter what you call the folders or what the files are called - as long as they reside under keys/testnet (or whatever network you're using) they'll be identified.
 
 Start the tx tester:
 `./harmony-tx-tests`
