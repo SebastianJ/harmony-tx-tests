@@ -13,6 +13,9 @@ import (
 )
 
 func main() {
+	// Force usage of Go's own DNS implementation
+	os.Setenv("GODEBUG", "netdns=go")
+
 	app := cli.NewApp()
 	app.Name = "Harmony tx tests"
 	app.Version = fmt.Sprintf("%s/%s-%s", runtime.Version(), runtime.GOOS, runtime.GOARCH)
