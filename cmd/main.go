@@ -31,7 +31,13 @@ func main() {
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:  "network",
-			Usage: "Which network to use (valid options: localnet, devnet, testnet, mainnet)",
+			Usage: "Which network to use (valid options: localnet, devnet, testnet, staking and mainnet)",
+			Value: "",
+		},
+
+		cli.StringFlag{
+			Name:  "mode",
+			Usage: "Which mode to use (valid options: api and local)",
 			Value: "",
 		},
 
