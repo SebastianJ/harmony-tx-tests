@@ -1,7 +1,7 @@
 network:
   name: "testnet"
   mode: "api" # If you want the framework to use your local node running in a specific network, set this to "local"
-  cross_shard_tx_wait_time: 16 # The time to wait for account balances to properly updated when performing cross shard transfers
+  cross_shard_tx_wait_time: 16 # The time to wait for account balances to properly updated when performing cross shard transfers - this time will be doubled for localnet and the staking network since they seem to be slower with processing txs and blocks
   gas:
     cost: 0.1 # Estimated gas cost that will be used for various transaction and funding calculations etc.
     limit: 53000 # Higher limit than regular txs (21000) - seems there are some issues occasionally when using a lower gas limit 
