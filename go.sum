@@ -19,6 +19,12 @@ github.com/SebastianJ/harmony-sdk v0.0.0-20200208141017-047c1793c5fc h1:aQfqFhdh
 github.com/SebastianJ/harmony-sdk v0.0.0-20200208141017-047c1793c5fc/go.mod h1:Rgk4caLfSkOj7ougJ4HUiPviE89SoFFla1m5QOus0d0=
 github.com/SebastianJ/harmony-sdk v0.0.0-20200208143521-22768e45fc6e h1:tMAUlIElsEnwqBG2I3K6rILFz9AaH0FX2Bcj0YoDgbg=
 github.com/SebastianJ/harmony-sdk v0.0.0-20200208143521-22768e45fc6e/go.mod h1:Rgk4caLfSkOj7ougJ4HUiPviE89SoFFla1m5QOus0d0=
+github.com/SebastianJ/harmony-sdk v0.0.0-20200209051927-27ac5015b0cf h1:rMI6WqxkW7C4+zbDEtDKl+8bqwHhmPjp+b4stzQnUIs=
+github.com/SebastianJ/harmony-sdk v0.0.0-20200209051927-27ac5015b0cf/go.mod h1:Rgk4caLfSkOj7ougJ4HUiPviE89SoFFla1m5QOus0d0=
+github.com/SebastianJ/harmony-sdk v0.0.0-20200209053418-d54d9516beda h1:QYu73RqRFxxNoSbDiNY1z9RinZEzkH8OgK39zAjWscQ=
+github.com/SebastianJ/harmony-sdk v0.0.0-20200209053418-d54d9516beda/go.mod h1:Rgk4caLfSkOj7ougJ4HUiPviE89SoFFla1m5QOus0d0=
+github.com/SebastianJ/harmony-sdk v0.0.0-20200209062632-dac176356d14 h1:bksSY1gfgise2eMrcQUDJRrmU4L5ne+kVBpK+Df+CFE=
+github.com/SebastianJ/harmony-sdk v0.0.0-20200209062632-dac176356d14/go.mod h1:Rgk4caLfSkOj7ougJ4HUiPviE89SoFFla1m5QOus0d0=
 github.com/SebastianJ/harmony-tf v0.0.0-20200205133721-3b2e2aa0db6e/go.mod h1:lUY+ZYq1JsxrLua5ceKKX3t5GVor0ljkvB4qKQb+nTs=
 github.com/SebastianJ/harmony-tf v0.0.0-20200207090937-fc62eae08b71 h1:F+FjdMPawVQuhQPBYxduAWFudaPSC4RsiujWuwX4vkw=
 github.com/SebastianJ/harmony-tf v0.0.0-20200207090937-fc62eae08b71/go.mod h1:102An61REWr3m1VR4C53iIKePdul6PgX956dawUOBvY=
@@ -62,6 +68,12 @@ github.com/SebastianJ/harmony-tf v0.0.0-20200208162310-6dbf6e6f97c8 h1:VU0xdpiEM
 github.com/SebastianJ/harmony-tf v0.0.0-20200208162310-6dbf6e6f97c8/go.mod h1:BPu8XY3PvuNtT4pJXMAlC/1YjXG14m98utWZNvCtiYo=
 github.com/SebastianJ/harmony-tf v0.0.0-20200209010549-e2b8dc2fcc29 h1:h1UptFC8mJXIGA7IpIFjyIphQiSSEBshTC6WncWHqvs=
 github.com/SebastianJ/harmony-tf v0.0.0-20200209010549-e2b8dc2fcc29/go.mod h1:BPu8XY3PvuNtT4pJXMAlC/1YjXG14m98utWZNvCtiYo=
+github.com/SebastianJ/harmony-tf v0.0.0-20200209052656-1aee73f2b8d3 h1:m5KnSiHzyFzo6ucOdj+73EiRmpoSakT4jyRmxb17tAw=
+github.com/SebastianJ/harmony-tf v0.0.0-20200209052656-1aee73f2b8d3/go.mod h1:zk3kcauiePC77OlhB/NpDiQpj3nbQKfyscEtg0lTm2Q=
+github.com/SebastianJ/harmony-tf v0.0.0-20200209053538-1d6b8eba0c8c h1:fhTz5X6kmsEAT5upAPZv5+1sMfJ2d4M/zd9PHg8uGNY=
+github.com/SebastianJ/harmony-tf v0.0.0-20200209053538-1d6b8eba0c8c/go.mod h1:0E2YY8GH6R+wbMgdiVhq+MeWOXlMKaiZWAKV1Dv28NY=
+github.com/SebastianJ/harmony-tf v0.0.0-20200209070523-c22059a82800 h1:Hsw381n+IfjWi6uZh0WGEbRzuHYtXrQFEU3y9X7KubA=
+github.com/SebastianJ/harmony-tf v0.0.0-20200209070523-c22059a82800/go.mod h1:0LtmAmyefNA20SpUZp5ogqp5VWf62DcbM/tuXyZUoto=
 github.com/Shopify/sarama v1.23.1/go.mod h1:XLH1GYJnLVE0XCr6KdJGVJRTwY30moWNJ4sERjXX6fs=
 github.com/Shopify/toxiproxy v2.1.4+incompatible/go.mod h1:OXgGpZ6Cli1/URJOF1DMxUHB2q5Ap20/P/eIdh4G0pI=
 github.com/StackExchange/wmi v0.0.0-20180116203802-5d049714c4a6/go.mod h1:3eOhrUMpNV+6aFIbp5/iudMxNCF27Vw2OZgy4xEx0Fg=

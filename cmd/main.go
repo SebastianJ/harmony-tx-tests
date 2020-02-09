@@ -70,6 +70,11 @@ func main() {
 			Usage: "Where the wallet keys are located",
 			Value: "",
 		},
+
+		cli.BoolFlag{
+			Name:  "verbose",
+			Usage: "Enable more verbose output",
+		},
 	}
 
 	app.Action = func(context *cli.Context) error {
