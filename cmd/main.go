@@ -71,6 +71,12 @@ func main() {
 			Value: "",
 		},
 
+		cli.StringFlag{
+			Name:  "test",
+			Usage: "What type of test cases to execute (valid options: all, transactions, staking)",
+			Value: "",
+		},
+
 		cli.BoolFlag{
 			Name:  "verbose",
 			Usage: "Enable more verbose output",

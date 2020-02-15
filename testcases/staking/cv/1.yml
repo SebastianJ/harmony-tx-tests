@@ -1,0 +1,31 @@
+category: "Create Validator"
+name: "CV1"
+goal: "Create Validator"
+priority: 0
+execute: true
+expected: true
+verbose: true
+scenario: "staking/create_validator"
+staking_parameters:
+  from_shard_id: 0
+  to_shard_id: 0
+  generate: false
+  validator:
+    name: "Bubz"
+    identity: "MrBubz"
+    website: "https://i.imgur.com/G6Mruca.jpg"
+    security_contact: "Bubz Hacker Legion"
+    details: "https://www.youtube.com/watch?v=QQNL83fhWJU"
+  commission:
+    rate: 0
+    max_rate: 0.1
+    max_change_rate: 0.05
+  amount: 10
+  minimum_self_delegation: 5
+  maximum_total_delegation: 1000
+  bls_key_count: 1
+  nonce: -1 # -1 means that the nonce will automatically be identified
+  confirmation_wait_time: 60
+  gas:
+    limit: -1 # -1 means that the gas limit will automatically get calculated
+    price: 1

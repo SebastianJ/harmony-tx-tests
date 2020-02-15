@@ -14,10 +14,10 @@ account:
   
 funding:
   account:
-    name: "TestSuiteFundingAccount" # This name will be prefixed with the current network name
+    name: "FundingAccount" # This name will be prefixed with the current network name
     address: ""
   minimum_funds: 10.0
-  confirmation_wait_time: 16
+  confirmation_wait_time: 60
   attempts: 10
   gas:
     cost: 0.0001
